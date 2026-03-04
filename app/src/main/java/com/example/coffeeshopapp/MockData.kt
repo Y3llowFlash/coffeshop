@@ -37,6 +37,41 @@ object MockData {
             description = "Coffee brewed with cold water for a smooth flavor.",
             price = 4.00,
             imageResId = R.drawable.coffee_coldbrew
+        ),
+        CoffeeModel(
+            id = 6,
+            name = "Americano",
+            description = "Espresso shots diluted with hot water for a bold, smooth cup.",
+            price = 3.75,
+            imageResId = R.drawable.coffee_espresso
+        ),
+        CoffeeModel(
+            id = 7,
+            name = "Flat White",
+            description = "Double espresso with silky microfoam and a velvety texture.",
+            price = 4.75,
+            imageResId = R.drawable.coffee_latte
+        ),
+        CoffeeModel(
+            id = 8,
+            name = "Macchiato",
+            description = "Espresso topped with a small dollop of foamed milk.",
+            price = 4.25,
+            imageResId = R.drawable.coffee_cappuccino
+        ),
+        CoffeeModel(
+            id = 9,
+            name = "Affogato",
+            description = "A scoop of vanilla ice cream with a hot espresso shot poured over.",
+            price = 5.75,
+            imageResId = R.drawable.coffee_mocha
+        ),
+        CoffeeModel(
+            id = 10,
+            name = "Iced Americano",
+            description = "Chilled espresso and water served over ice for a crisp finish.",
+            price = 4.25,
+            imageResId = R.drawable.coffee_coldbrew
         )
     )
 }
