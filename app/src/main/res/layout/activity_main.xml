@@ -54,6 +54,84 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle" />
 
+    <HorizontalScrollView
+        android:id="@+id/filterScrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/etSearchCoffee">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp">
+
+            <Button
+                android:id="@+id/btnFilterAll"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_filter_button"
+                android:minWidth="0dp"
+                android:tag="all"
+                android:text="All"
+                android:textAllCaps="false"
+                android:textColor="@color/coffeeBrown" />
+
+            <Button
+                android:id="@+id/btnFilterCoffee"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_filter_button"
+                android:minWidth="0dp"
+                android:tag="coffee"
+                android:text="Coffee"
+                android:textAllCaps="false"
+                android:textColor="@color/coffeeBrown" />
+
+            <Button
+                android:id="@+id/btnFilterHot"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_filter_button"
+                android:minWidth="0dp"
+                android:tag="hot"
+                android:text="Hot"
+                android:textAllCaps="false"
+                android:textColor="@color/coffeeBrown" />
+
+            <Button
+                android:id="@+id/btnFilterIced"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/bg_filter_button"
+                android:minWidth="0dp"
+                android:tag="iced"
+                android:text="Iced"
+                android:textAllCaps="false"
+                android:textColor="@color/coffeeBrown" />
+
+            <Button
+                android:id="@+id/btnFilterNonCoffee"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:background="@drawable/bg_filter_button"
+                android:minWidth="0dp"
+                android:tag="non_coffee"
+                android:text="Non Coffee"
+                android:textAllCaps="false"
+                android:textColor="@color/coffeeBrown" />
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvCoffeeList"
         android:layout_width="0dp"
@@ -66,7 +144,7 @@
         app:layout_constraintBottom_toTopOf="@id/btnViewCart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/etSearchCoffee" />
+        app:layout_constraintTop_toBottomOf="@id/filterScrollView" />
 
     <Button
         android:id="@+id/btnViewCart"

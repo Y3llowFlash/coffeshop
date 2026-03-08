@@ -9,6 +9,7 @@ object MockData {
             name = "Espresso",
             description = "Strong, concentrated coffee served in small shots.",
             price = 3.50,
+            type = "coffee",
             imageResId = R.drawable.coffee_espresso
         ),
         CoffeeModel(
@@ -16,6 +17,7 @@ object MockData {
             name = "Cappuccino",
             description = "Equal parts espresso, steamed milk, and milk foam.",
             price = 4.50,
+            type = "coffee",
             imageResId = R.drawable.coffee_cappuccino
         ),
         CoffeeModel(
@@ -23,6 +25,7 @@ object MockData {
             name = "Latte",
             description = "Espresso with steamed milk and a light layer of foam.",
             price = 5.00,
+            type = "coffee",
             imageResId = R.drawable.coffee_latte
         ),
         CoffeeModel(
@@ -30,6 +33,7 @@ object MockData {
             name = "Mocha",
             description = "Espresso with chocolate syrup and steamed milk.",
             price = 5.50,
+            type = "hot",
             imageResId = R.drawable.coffee_mocha
         ),
         CoffeeModel(
@@ -37,6 +41,7 @@ object MockData {
             name = "Cold Brew",
             description = "Coffee brewed with cold water for a smooth flavor.",
             price = 4.00,
+            type = "iced",
             imageResId = R.drawable.coffee_coldbrew
         ),
         CoffeeModel(
@@ -44,6 +49,7 @@ object MockData {
             name = "Americano",
             description = "Espresso shots diluted with hot water for a bold, smooth cup.",
             price = 3.75,
+            type = "hot",
             imageResId = R.drawable.coffee_espresso
         ),
         CoffeeModel(
@@ -51,6 +57,7 @@ object MockData {
             name = "Flat White",
             description = "Double espresso with silky microfoam and a velvety texture.",
             price = 4.75,
+            type = "coffee",
             imageResId = R.drawable.coffee_latte
         ),
         CoffeeModel(
@@ -58,6 +65,7 @@ object MockData {
             name = "Macchiato",
             description = "Espresso topped with a small dollop of foamed milk.",
             price = 4.25,
+            type = "coffee",
             imageResId = R.drawable.coffee_cappuccino
         ),
         CoffeeModel(
@@ -65,6 +73,7 @@ object MockData {
             name = "Affogato",
             description = "A scoop of vanilla ice cream with a hot espresso shot poured over.",
             price = 5.75,
+            type = "non_coffee",
             imageResId = R.drawable.coffee_mocha
         ),
         CoffeeModel(
@@ -72,6 +81,7 @@ object MockData {
             name = "Iced Americano",
             description = "Chilled espresso and water served over ice for a crisp finish.",
             price = 4.25,
+            type = "iced",
             imageResId = R.drawable.coffee_coldbrew
         )
     )

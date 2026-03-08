@@ -40,13 +40,13 @@ class CoffeeAdapter(
 
     override fun getItemCount(): Int = displayedCoffeeList.size
 
-    fun filter(query: String) {
-        displayedCoffeeList = if (query.isBlank()) {
-            originalCoffeeList
-        } else {
-            originalCoffeeList.filter { coffee ->
-                coffee.name.contains(query.trim(), ignoreCase = true)
-            }
+    fun filter(query: String, selectedType: String) {
+        val trimmedQuery = query.trim()
+        displayedCoffeeList = originalCoffeeList.filter { coffee ->
+            val matchesQuery = trimmedQuery.isBlank() ||
+                coffee.name.contains(trimmedQuery, ignoreCase = true)
+            val matchesType = selectedType == "all" || coffee.type == selectedType
+            matchesQuery && matchesType
         }
         notifyDataSetChanged()
     }

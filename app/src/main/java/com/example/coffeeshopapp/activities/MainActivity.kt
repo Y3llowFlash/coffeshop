@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var coffeeViewModel: CoffeeViewModel
     private lateinit var cartViewModel: CartViewModel
     private lateinit var coffeeAdapter: CoffeeAdapter
+    private lateinit var etSearchCoffee: EditText
+    private lateinit var filterButtons: List<Button>
+    private var selectedType: String = "all"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,16 +54,31 @@ class MainActivity : AppCompatActivity() {
         )
         rvCoffeeList.adapter = coffeeAdapter
 
-        val etSearchCoffee = findViewById<EditText>(R.id.etSearchCoffee)
+        etSearchCoffee = findViewById(R.id.etSearchCoffee)
         etSearchCoffee.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                coffeeAdapter.filter(s?.toString().orEmpty())
+                applyFilters()
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
         })
+
+        filterButtons = listOf(
+            findViewById(R.id.btnFilterAll),
+            findViewById(R.id.btnFilterCoffee),
+            findViewById(R.id.btnFilterHot),
+            findViewById(R.id.btnFilterIced),
+            findViewById(R.id.btnFilterNonCoffee)
+        )
+
+        bindFilterButton(findViewById(R.id.btnFilterAll), "all")
+        bindFilterButton(findViewById(R.id.btnFilterCoffee), "coffee")
+        bindFilterButton(findViewById(R.id.btnFilterHot), "hot")
+        bindFilterButton(findViewById(R.id.btnFilterIced), "iced")
+        bindFilterButton(findViewById(R.id.btnFilterNonCoffee), "non_coffee")
+        updateFilterButtonState()
 
         val imgCart = findViewById<ImageView>(R.id.imgCart)
         imgCart.setOnClickListener {
@@ -69,6 +88,28 @@ class MainActivity : AppCompatActivity() {
         val btnViewCart = findViewById<Button>(R.id.btnViewCart)
         btnViewCart.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
+        }
+    }
+
+    private fun bindFilterButton(button: Button, type: String) {
+        button.setOnClickListener {
+            selectedType = type
+            updateFilterButtonState()
+            applyFilters()
+        }
+    }
+
+    private fun applyFilters() {
+        coffeeAdapter.filter(etSearchCoffee.text?.toString().orEmpty(), selectedType)
+    }
+
+    private fun updateFilterButtonState() {
+        for (button in filterButtons) {
+            val isSelected = button.tag == selectedType
+            button.isSelected = isSelected
+            button.alpha = if (isSelected) 1.0f else 0.72f
+            val textColor = if (isSelected) R.color.white else R.color.coffeeBrown
+            button.setTextColor(ContextCompat.getColor(this, textColor))
         }
     }
 
