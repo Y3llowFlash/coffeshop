@@ -81,7 +81,8 @@
                 android:tag="all"
                 android:text="All"
                 android:textAllCaps="false"
-                android:textColor="@color/coffeeBrown" />
+                android:textColor="@color/filter_text_color"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnFilterCoffee"
@@ -93,7 +94,8 @@
                 android:tag="coffee"
                 android:text="Coffee"
                 android:textAllCaps="false"
-                android:textColor="@color/coffeeBrown" />
+                android:textColor="@color/filter_text_color"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnFilterHot"
@@ -105,7 +107,8 @@
                 android:tag="hot"
                 android:text="Hot"
                 android:textAllCaps="false"
-                android:textColor="@color/coffeeBrown" />
+                android:textColor="@color/filter_text_color"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnFilterIced"
@@ -117,7 +120,8 @@
                 android:tag="iced"
                 android:text="Iced"
                 android:textAllCaps="false"
-                android:textColor="@color/coffeeBrown" />
+                android:textColor="@color/filter_text_color"
+                android:textStyle="bold" />
 
             <Button
                 android:id="@+id/btnFilterNonCoffee"
@@ -128,7 +132,8 @@
                 android:tag="non_coffee"
                 android:text="Non Coffee"
                 android:textAllCaps="false"
-                android:textColor="@color/coffeeBrown" />
+                android:textColor="@color/filter_text_color"
+                android:textStyle="bold" />
         </LinearLayout>
     </HorizontalScrollView>
 

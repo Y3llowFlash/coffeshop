@@ -45,7 +45,7 @@ class CoffeeAdapter(
         displayedCoffeeList = originalCoffeeList.filter { coffee ->
             val matchesQuery = trimmedQuery.isBlank() ||
                 coffee.name.contains(trimmedQuery, ignoreCase = true)
-            val matchesType = selectedType == "all" || coffee.type == selectedType
+            val matchesType = selectedType == "all" || coffee.types.contains(selectedType)
             matchesQuery && matchesType
         }
         notifyDataSetChanged()

@@ -9,7 +9,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -105,12 +104,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateFilterButtonState() {
         for (button in filterButtons) {
-            val isSelected = button.tag == selectedType
-            button.isSelected = isSelected
-            button.alpha = if (isSelected) 1.0f else 0.72f
-            val textColor = if (isSelected) R.color.white else R.color.coffeeBrown
-            button.setTextColor(ContextCompat.getColor(this, textColor))
+            button.isSelected = button.tag == selectedType
+
         }
+
     }
 
     companion object {

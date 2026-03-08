@@ -3,7 +3,7 @@ package com.example.coffeeshopapp
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeeshopapp.model.CartItem
@@ -47,10 +47,10 @@ class CartAdapter(
     override fun getItemCount(): Int = cartList.size
 
     class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val btnMinus: Button = itemView.findViewById(R.id.btnCartMinus)
+        val btnMinus: ImageButton = itemView.findViewById(R.id.btnCartMinus)
         val tvName: TextView = itemView.findViewById(R.id.tvCartName)
         val tvQty: TextView = itemView.findViewById(R.id.tvCartQty)
-        val btnPlus: Button = itemView.findViewById(R.id.btnCartPlus)
+        val btnPlus: ImageButton = itemView.findViewById(R.id.btnCartPlus)
         val tvPrice: TextView = itemView.findViewById(R.id.tvCartPrice)
     }
 }

@@ -7,7 +7,7 @@ data class CoffeeModel(
     val name: String,
     val description: String,
     val price: Double,
-    val type: String,
+    val types: List<String>,
     val imageResId: Int
 ) : Serializable
 

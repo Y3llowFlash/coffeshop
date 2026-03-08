@@ -2,6 +2,7 @@ package com.example.coffeeshopapp.activities
 
 import android.os.Bundle
 import android.widget.Button
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -27,8 +28,8 @@ class DetailActivity : AppCompatActivity() {
         val tvName: TextView = findViewById(R.id.tvDetailName)
         val tvPrice: TextView = findViewById(R.id.tvDetailPrice)
         val tvDesc: TextView = findViewById(R.id.tvDetailDesc)
-        val btnMinusQuantity: Button = findViewById(R.id.btnMinusQuantity)
-        val btnPlusQuantity: Button = findViewById(R.id.btnPlusQuantity)
+        val btnMinusQuantity: ImageButton = findViewById(R.id.btnMinusQuantity)
+        val btnPlusQuantity: ImageButton = findViewById(R.id.btnPlusQuantity)
         val tvQuantityValue: TextView = findViewById(R.id.tvQuantityValue)
         val btnAdd: Button = findViewById(R.id.btnAddCart)
 
