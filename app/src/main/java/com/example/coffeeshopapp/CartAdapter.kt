@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.coffeeshopapp.model.CartItem
 
 class CartAdapter(private val cartList: List<CartItem>) :
     RecyclerView.Adapter<CartAdapter.CartViewHolder>() {

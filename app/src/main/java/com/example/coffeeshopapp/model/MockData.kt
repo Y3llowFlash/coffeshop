@@ -1,14 +1,15 @@
-package com.example.coffeeshopapp
+package com.example.coffeeshopapp.model
+
+import com.example.coffeeshopapp.R
 
 object MockData {
-    // A hardcoded list of coffees
     val menuList = listOf(
         CoffeeModel(
             id = 1,
             name = "Espresso",
             description = "Strong, concentrated coffee served in small shots.",
             price = 3.50,
-            imageResId = R.drawable.coffee_espresso // We will add these images next!
+            imageResId = R.drawable.coffee_espresso
         ),
         CoffeeModel(
             id = 2,

@@ -1,4 +1,4 @@
-package com.example.coffeeshopapp
+package com.example.coffeeshopapp.activities
 
 import android.os.Bundle
 import android.widget.Button
@@ -6,44 +6,45 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import com.example.coffeeshopapp.R
+import com.example.coffeeshopapp.viewmodel.CartViewModel
+import com.example.coffeeshopapp.viewmodel.CoffeeViewModel
 
 class DetailActivity : AppCompatActivity() {
+    private lateinit var coffeeViewModel: CoffeeViewModel
+    private lateinit var cartViewModel: CartViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        // 1. Get the views
+        coffeeViewModel = ViewModelProvider(this)[CoffeeViewModel::class.java]
+        cartViewModel = ViewModelProvider(this)[CartViewModel::class.java]
+
         val img: ImageView = findViewById(R.id.imgDetailCoffee)
         val tvName: TextView = findViewById(R.id.tvDetailName)
         val tvPrice: TextView = findViewById(R.id.tvDetailPrice)
         val tvDesc: TextView = findViewById(R.id.tvDetailDesc)
         val btnAdd: Button = findViewById(R.id.btnAddCart)
 
-        // 2. Unwrap the Envelope (Get the Coffee object)
-        val coffee = intent.getSerializableExtra("COFFEE_EXTRA") as? CoffeeModel
+        val coffeeId = intent.getIntExtra(MainActivity.COFFEE_ID_EXTRA, -1)
+        val coffee = coffeeViewModel.getCoffeeById(coffeeId)
 
-        // 3. Display the data (Check if it's not null first)
         if (coffee != null) {
             img.setImageResource(coffee.imageResId)
             tvName.text = coffee.name
             tvPrice.text = "$${coffee.price}"
             tvDesc.text = coffee.description
 
-            // 4. Handle Button Click (UPDATED FOR DAY 2)
             btnAdd.setOnClickListener {
-                // --- NEW LOGIC START ---
-
-                // Add the specific coffee to our global cart manager
-                CartManager.addItem(coffee)
-
-                // Show feedback to the user
+                cartViewModel.addItem(coffee)
+                cartViewModel.saveCart(this)
                 Toast.makeText(this, "Added ${coffee.name} to Cart!", Toast.LENGTH_SHORT).show()
-
-                // Optional: If you want to go back to the menu immediately after adding, uncomment the line below:
-                // finish()
-
-                // --- NEW LOGIC END ---
             }
+        } else {
+            Toast.makeText(this, "Coffee not found.", Toast.LENGTH_SHORT).show()
+            finish()
         }
     }
 }
