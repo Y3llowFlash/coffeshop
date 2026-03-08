@@ -11,9 +11,9 @@
 
 
     <!-- Default -->
-    <item>
+    <item android:state_selected="false">
         <shape android:shape="rectangle">
-            <solid android:color="@color/latte"/>
+            <solid android:color="@color/cream"/>
             <corners android:radius="16dp"/>
         </shape>
     </item>

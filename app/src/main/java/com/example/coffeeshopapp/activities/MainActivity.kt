@@ -103,11 +103,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateFilterButtonState() {
-        for (button in filterButtons) {
-            button.isSelected = button.tag == selectedType
-
-        }
-
+//        for (button in filterButtons) {
+//            button.isSelected = button.tag == selectedType
+//
+//        }
+        filterButtons.forEach { it.isSelected = false }
+        filterButtons.find { it.tag == selectedType }?.isSelected = true
     }
 
     companion object {
