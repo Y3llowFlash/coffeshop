@@ -9,15 +9,43 @@
     android:orientation="horizontal"
     android:padding="16dp">
 
+    <Button
+        android:id="@+id/btnCartMinus"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_quantity_minus"
+        android:elevation="4dp"
+        android:minWidth="0dp"
+        android:text="-"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
     <TextView
         android:id="@+id/tvCartQty"
-        android:layout_width="44dp"
-        android:layout_height="44dp"
+        android:layout_width="52dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/bg_qty_badge"
         android:gravity="center"
         android:text="1x"
         android:textColor="@color/coffeeBrown"
         android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnCartPlus"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/bg_quantity_plus"
+        android:elevation="4dp"
+        android:minWidth="0dp"
+        android:text="+"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView

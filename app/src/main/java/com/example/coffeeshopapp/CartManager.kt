@@ -15,13 +15,14 @@ object CartManager {
 
     private val items = mutableListOf<CartItem>()
 
-    fun addItem(coffee: CoffeeModel) {
+    fun addItem(coffee: CoffeeModel, quantity: Int = 1) {
         val existingItem = items.find { it.coffee.id == coffee.id }
+        val safeQuantity = quantity.coerceAtLeast(1)
 
         if (existingItem != null) {
-            existingItem.quantity++
+            existingItem.quantity += safeQuantity
         } else {
-            items.add(CartItem(coffee, 1))
+            items.add(CartItem(coffee, safeQuantity))
         }
     }
 
@@ -39,6 +40,19 @@ object CartManager {
 
     fun clearCart() {
         items.clear()
+    }
+
+    fun increaseItemQuantity(coffeeId: Int) {
+        val existingItem = items.find { it.coffee.id == coffeeId } ?: return
+        existingItem.quantity++
+    }
+
+    fun decreaseItemQuantity(coffeeId: Int) {
+        val existingItem = items.find { it.coffee.id == coffeeId } ?: return
+        existingItem.quantity--
+        if (existingItem.quantity <= 0) {
+            items.remove(existingItem)
+        }
     }
 
     fun saveCart(context: Context) {

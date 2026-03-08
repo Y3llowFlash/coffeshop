@@ -10,10 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeeshopapp.model.CoffeeModel
 
 class CoffeeAdapter(
-    private var coffeeList: List<CoffeeModel>,
+    coffeeList: List<CoffeeModel>,
     private val onItemClick: (CoffeeModel) -> Unit,
     private val onAddToCartClick: (CoffeeModel) -> Unit
 ) : RecyclerView.Adapter<CoffeeAdapter.CoffeeViewHolder>() {
+    private val originalCoffeeList = coffeeList.toList()
+    private var displayedCoffeeList = coffeeList.toList()
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CoffeeViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -22,7 +25,7 @@ class CoffeeAdapter(
     }
 
     override fun onBindViewHolder(holder: CoffeeViewHolder, position: Int) {
-        val coffee = coffeeList[position]
+        val coffee = displayedCoffeeList[position]
         holder.tvName.text = coffee.name
         holder.tvPrice.text = "$${coffee.price}"
         holder.imgCoffee.setImageResource(coffee.imageResId)
@@ -35,10 +38,16 @@ class CoffeeAdapter(
         }
     }
 
-    override fun getItemCount(): Int = coffeeList.size
+    override fun getItemCount(): Int = displayedCoffeeList.size
 
-    fun updateData(updatedList: List<CoffeeModel>) {
-        coffeeList = updatedList
+    fun filter(query: String) {
+        displayedCoffeeList = if (query.isBlank()) {
+            originalCoffeeList
+        } else {
+            originalCoffeeList.filter { coffee ->
+                coffee.name.contains(query.trim(), ignoreCase = true)
+            }
+        }
         notifyDataSetChanged()
     }
 

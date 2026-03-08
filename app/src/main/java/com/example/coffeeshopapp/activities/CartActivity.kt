@@ -16,6 +16,8 @@ import com.example.coffeeshopapp.viewmodel.CartViewModel
 
 class CartActivity : AppCompatActivity() {
     private lateinit var cartViewModel: CartViewModel
+    private lateinit var tvTotal: TextView
+    private lateinit var cartAdapter: CartAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,11 +29,28 @@ class CartActivity : AppCompatActivity() {
         rvCart.layoutManager = LinearLayoutManager(this)
 
         val items = cartViewModel.getCartItems()
-        rvCart.adapter = CartAdapter(items)
+        cartAdapter = CartAdapter(
+            items,
+            onIncreaseQuantity = { item, position ->
+                cartViewModel.increaseItemQuantity(item.coffee.id)
+                cartAdapter.notifyItemChanged(position)
+                refreshCartState()
+            },
+            onDecreaseQuantity = { item, position ->
+                val shouldRemoveItem = item.quantity == 1
+                cartViewModel.decreaseItemQuantity(item.coffee.id)
+                if (shouldRemoveItem) {
+                    cartAdapter.notifyItemRemoved(position)
+                } else {
+                    cartAdapter.notifyItemChanged(position)
+                }
+                refreshCartState()
+            }
+        )
+        rvCart.adapter = cartAdapter
 
-        val tvTotal: TextView = findViewById(R.id.tvTotalPrice)
-        val total = cartViewModel.getTotalPrice()
-        tvTotal.text = "Total: $${String.format("%.2f", total)}"
+        tvTotal = findViewById(R.id.tvTotalPrice)
+        refreshCartState()
 
         val btnCheckout: Button = findViewById(R.id.btnCheckout)
         btnCheckout.setOnClickListener {
@@ -42,14 +61,24 @@ class CartActivity : AppCompatActivity() {
 
             val builder = AlertDialog.Builder(this)
             builder.setTitle("Order Successful!")
-            builder.setMessage("Your coffee is being prepared.\nTotal: $${String.format("%.2f", total)}")
+            builder.setMessage(
+                "Your coffee is being prepared.\nTotal: $${String.format("%.2f", cartViewModel.getTotalPrice())}"
+            )
             builder.setPositiveButton("OK") { _: DialogInterface, _: Int ->
                 cartViewModel.clearCart()
+                cartAdapter.notifyDataSetChanged()
+                refreshCartState()
                 cartViewModel.saveCart(this)
                 finish()
             }
             builder.show()
         }
+    }
+
+    private fun refreshCartState() {
+        val total = cartViewModel.getTotalPrice()
+        tvTotal.text = "Total: $${String.format("%.2f", total)}"
+        cartViewModel.saveCart(this)
     }
 
     override fun onPause() {

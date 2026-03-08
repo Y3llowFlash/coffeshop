@@ -55,15 +55,7 @@ class MainActivity : AppCompatActivity() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                val query = s?.toString()?.trim().orEmpty()
-                val filteredList = if (query.isEmpty()) {
-                    coffeeList
-                } else {
-                    coffeeList.filter { coffee ->
-                        coffee.name.contains(query, ignoreCase = true)
-                    }
-                }
-                coffeeAdapter.updateData(filteredList)
+                coffeeAdapter.filter(s?.toString().orEmpty())
             }
 
             override fun afterTextChanged(s: Editable?) = Unit
