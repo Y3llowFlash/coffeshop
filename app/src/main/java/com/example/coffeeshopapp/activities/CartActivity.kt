@@ -2,6 +2,7 @@ package com.example.coffeeshopapp.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -16,6 +17,8 @@ import com.example.coffeeshopapp.viewmodel.CartViewModel
 class CartActivity : AppCompatActivity() {
     private lateinit var cartViewModel: CartViewModel
     private lateinit var tvTotal: TextView
+    private lateinit var tvCartEmpty: TextView
+    private lateinit var rvCart: RecyclerView
     private lateinit var cartAdapter: CartAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,7 +27,7 @@ class CartActivity : AppCompatActivity() {
 
         cartViewModel = ViewModelProvider(this)[CartViewModel::class.java]
 
-        val rvCart = findViewById<RecyclerView>(R.id.rvCartItems)
+        rvCart = findViewById(R.id.rvCartItems)
         rvCart.layoutManager = LinearLayoutManager(this)
 
         val items = cartViewModel.getCartItems()
@@ -49,6 +52,7 @@ class CartActivity : AppCompatActivity() {
         rvCart.adapter = cartAdapter
 
         tvTotal = findViewById(R.id.tvTotalPrice)
+        tvCartEmpty = findViewById(R.id.tvCartEmpty)
         refreshCartState()
 
         val btnCheckout: Button = findViewById(R.id.btnCheckout)
@@ -63,7 +67,14 @@ class CartActivity : AppCompatActivity() {
 
     private fun refreshCartState() {
         val total = cartViewModel.getTotalPrice()
-        tvTotal.text = "Total: $${String.format("%.2f", total)}"
+        tvTotal.text = "Total: ${total} MMK"
+        if (cartViewModel.getCartItems().isEmpty()) {
+            tvCartEmpty.visibility = View.VISIBLE
+            rvCart.visibility = View.GONE
+        } else {
+            tvCartEmpty.visibility = View.GONE
+            rvCart.visibility = View.VISIBLE
+        }
         cartViewModel.saveCart(this)
     }
 

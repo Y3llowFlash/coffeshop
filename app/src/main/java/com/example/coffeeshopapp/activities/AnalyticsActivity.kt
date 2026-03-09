@@ -275,7 +275,7 @@ class AnalyticsActivity : AppCompatActivity() {
 
     private class CurrencyValueFormatter : ValueFormatter() {
         override fun getFormattedValue(value: Float): String {
-            return "$${String.format("%.0f", value)}"
+            return "${value} MMK"
         }
     }
 }

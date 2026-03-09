@@ -27,7 +27,7 @@ class CartAdapter(
         holder.tvQty.text = "${item.quantity}x"
 
         val rowPrice = item.coffee.price * item.quantity
-        holder.tvPrice.text = "$${String.format("%.2f", rowPrice)}"
+        holder.tvPrice.text = "${rowPrice} MMK"
 
         holder.btnPlus.setOnClickListener {
             val position = holder.adapterPosition

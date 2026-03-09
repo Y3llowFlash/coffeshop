@@ -28,7 +28,7 @@ class CoffeeAdapter(
     override fun onBindViewHolder(holder: CoffeeViewHolder, position: Int) {
         val coffee = displayedCoffeeList[position]
         holder.tvName.text = coffee.name
-        holder.tvPrice.text = "$${coffee.price}"
+        holder.tvPrice.text = "${coffee.price} MMK"
         if (coffee.imageUrl.isNotBlank()) {
             Glide.with(holder.imgCoffee.context)
                 .load(coffee.imageUrl)
