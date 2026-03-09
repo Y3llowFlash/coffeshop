@@ -1,6 +1,7 @@
 package com.example.coffeeshopapp.repository
 
 import com.example.coffeeshopapp.model.MockData
+import com.google.firebase.FirebaseApp
 import com.google.firebase.firestore.FirebaseFirestore
 
 class MenuInitializer {
@@ -27,6 +28,14 @@ class MenuInitializer {
                     val itemDocument = menuDocument
                         .collection(ITEMS_COLLECTION)
                         .document(item.id.toString())
+                    val imageDrawable = if (item.imageResId != 0) {
+                        FirebaseApp.getInstance()
+                            .applicationContext
+                            .resources
+                            .getResourceEntryName(item.imageResId)
+                    } else {
+                        item.imageDrawable
+                    }
 
                     batch.set(
                         itemDocument,
@@ -35,7 +44,7 @@ class MenuInitializer {
                             "description" to item.description,
                             "price" to item.price,
                             "types" to item.types,
-                            "imageDrawable" to item.imageDrawable,
+                            "imageDrawable" to imageDrawable,
                             "imageUrl" to "",
                             "enabled" to true
                         )

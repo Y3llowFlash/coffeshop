@@ -90,6 +90,14 @@ class MenuEditorAdapter(
             Glide.with(holder.imageView.context)
                 .load(coffee.imageUrl)
                 .into(holder.imageView)
+        } else if (coffee.imageDrawable.isNotBlank()) {
+            val context = holder.imageView.context
+            val resId = context.resources.getIdentifier(
+                coffee.imageDrawable,
+                "drawable",
+                context.packageName
+            )
+            holder.imageView.setImageResource(resId)
         } else {
             holder.imageView.setImageResource(coffee.imageResId)
         }
