@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
             }
         )
         rvCoffeeList.adapter = coffeeAdapter
-        reloadMenu()
 
         etSearchCoffee = findViewById(R.id.etSearchCoffee)
         etSearchCoffee.addTextChangedListener(object : TextWatcher {
@@ -117,6 +116,8 @@ class MainActivity : AppCompatActivity() {
         btnAnalytics.setOnClickListener {
             openAnalytics()
         }
+
+        reloadMenu()
     }
 
     override fun onResume() {
@@ -155,6 +156,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun applyFilters() {
+        if (!::etSearchCoffee.isInitialized) return
         coffeeAdapter.filter(etSearchCoffee.text?.toString().orEmpty(), selectedType)
     }
 

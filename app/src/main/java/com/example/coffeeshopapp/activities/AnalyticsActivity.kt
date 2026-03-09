@@ -85,8 +85,13 @@ class AnalyticsActivity : AppCompatActivity() {
                 setBackgroundColor(getColor(R.color.coffeeBrown))
                 setTextColor(getColor(R.color.cream))
                 setOnClickListener {
-                    auth.signOut()
-                    navigateToMain()
+                    FirebaseAuth.getInstance().signOut()
+
+                    val intent = Intent(this@AnalyticsActivity, MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+                    startActivity(intent)
+                    finish()
                 }
             })
         }
@@ -265,11 +270,6 @@ class AnalyticsActivity : AppCompatActivity() {
         startActivity(Intent(this, LoginActivity::class.java).apply {
             putExtra(LoginActivity.EXTRA_DESTINATION, AnalyticsActivity::class.java.name)
         })
-        finish()
-    }
-
-    private fun navigateToMain() {
-        startActivity(Intent(this, MainActivity::class.java))
         finish()
     }
 
