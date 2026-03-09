@@ -13,6 +13,12 @@
         android:theme="@style/Theme.CoffeeShopApp"
         tools:targetApi="31">
 
+        <activity android:name=".activities.AnalyticsActivity" />
+
+        <activity android:name=".activities.CheckoutActivity" />
+
+        <activity android:name=".activities.OrderHistoryActivity" />
+
         <activity android:name=".activities.DetailActivity" />
 
         <activity android:name=".activities.CartActivity" />
@@ -25,6 +31,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activities.LoginActivity" />
     </application>
 
 </manifest>

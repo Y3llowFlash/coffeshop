@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeeshopapp.CoffeeAdapter
 import com.example.coffeeshopapp.R
+import com.google.firebase.auth.FirebaseAuth
 import com.example.coffeeshopapp.viewmodel.CartViewModel
 import com.example.coffeeshopapp.viewmodel.CoffeeViewModel
 
@@ -90,6 +91,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    fun openAnalytics() {
+        openProtectedScreen(AnalyticsActivity::class.java)
+    }
+
+    fun openOrderHistory() {
+        openProtectedScreen(OrderHistoryActivity::class.java)
+    }
+
     private fun bindFilterButton(button: Button, type: String) {
         button.setOnClickListener {
             selectedType = type
@@ -109,6 +118,18 @@ class MainActivity : AppCompatActivity() {
 //        }
         filterButtons.forEach { it.isSelected = false }
         filterButtons.find { it.tag == selectedType }?.isSelected = true
+    }
+
+    private fun openProtectedScreen(destination: Class<*>) {
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        val intent = if (currentUser == null) {
+            Intent(this, LoginActivity::class.java).apply {
+                putExtra(LoginActivity.EXTRA_DESTINATION, destination.name)
+            }
+        } else {
+            Intent(this, destination)
+        }
+        startActivity(intent)
     }
 
     companion object {

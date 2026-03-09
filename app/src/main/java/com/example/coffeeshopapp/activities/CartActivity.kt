@@ -1,11 +1,10 @@
 package com.example.coffeeshopapp.activities
 
-import android.content.DialogInterface
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -58,20 +57,7 @@ class CartActivity : AppCompatActivity() {
                 Toast.makeText(this, "Your cart is empty!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle("Order Successful!")
-            builder.setMessage(
-                "Your coffee is being prepared.\nTotal: $${String.format("%.2f", cartViewModel.getTotalPrice())}"
-            )
-            builder.setPositiveButton("OK") { _: DialogInterface, _: Int ->
-                cartViewModel.clearCart()
-                cartAdapter.notifyDataSetChanged()
-                refreshCartState()
-                cartViewModel.saveCart(this)
-                finish()
-            }
-            builder.show()
+            startActivity(Intent(this, CheckoutActivity::class.java))
         }
     }
 
