@@ -32,7 +32,7 @@ object CartManager {
     fun getTotalPrice(): Double {
         var total = 0.0
         for (item in items) {
-            total += (item.coffee.price * item.quantity)
+            total += (sanitizePrice(item.coffee.price) * item.quantity)
         }
         return total
     }
@@ -57,11 +57,12 @@ object CartManager {
     fun saveCart(context: Context) {
         val cartItemsJson = JSONArray()
         for (item in items) {
+            val safePrice = sanitizePrice(item.coffee.price)
             val itemJson = JSONObject()
                 .put("coffeeId", item.coffee.id)
                 .put("name", item.coffee.name)
                 .put("description", item.coffee.description)
-                .put("price", item.coffee.price)
+                .put("price", safePrice)
                 .put("types", JSONArray(item.coffee.types))
                 .put("imageResId", item.coffee.imageResId)
                 .put("imageDrawable", item.coffee.imageDrawable)
@@ -110,5 +111,9 @@ object CartManager {
             val quantity = itemJson.getInt("quantity")
             items.add(CartItem(coffee, quantity))
         }
+    }
+
+    private fun sanitizePrice(price: Double): Double {
+        return if (price.isNaN() || price.isInfinite()) 0.0 else price
     }
 }
