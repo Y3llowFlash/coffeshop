@@ -89,6 +89,16 @@ class MainActivity : AppCompatActivity() {
         btnViewCart.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
         }
+
+        val btnOrderHistory = findViewById<Button>(R.id.btnOrderHistory)
+        btnOrderHistory.setOnClickListener {
+            openOrderHistory()
+        }
+
+        val btnAnalytics = findViewById<Button>(R.id.btnAnalytics)
+        btnAnalytics.setOnClickListener {
+            openAnalytics()
+        }
     }
 
     fun openAnalytics() {
