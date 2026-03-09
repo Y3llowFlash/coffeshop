@@ -102,7 +102,21 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun openAnalytics() {
-        openProtectedScreen(AnalyticsActivity::class.java)
+        val currentUser = FirebaseAuth.getInstance().currentUser
+        if (currentUser == null) {
+            Toast.makeText(
+                this,
+                "Please sign in to use Sales Analytics",
+                Toast.LENGTH_SHORT
+            ).show()
+
+            startActivity(Intent(this, LoginActivity::class.java).apply {
+                putExtra(LoginActivity.EXTRA_DESTINATION, AnalyticsActivity::class.java.name)
+            })
+            return
+        }
+
+        startActivity(Intent(this, AnalyticsActivity::class.java))
     }
 
     fun openOrderHistory() {
@@ -122,10 +136,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateFilterButtonState() {
-//        for (button in filterButtons) {
-//            button.isSelected = button.tag == selectedType
-//
-//        }
         filterButtons.forEach { it.isSelected = false }
         filterButtons.find { it.tag == selectedType }?.isSelected = true
     }
