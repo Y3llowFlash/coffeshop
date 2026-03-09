@@ -3,7 +3,6 @@ package com.example.coffeeshopapp
 import android.content.Context
 import com.example.coffeeshopapp.model.CartItem
 import com.example.coffeeshopapp.model.CoffeeModel
-import com.example.coffeeshopapp.model.MockData
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -60,6 +59,13 @@ object CartManager {
         for (item in items) {
             val itemJson = JSONObject()
                 .put("coffeeId", item.coffee.id)
+                .put("name", item.coffee.name)
+                .put("description", item.coffee.description)
+                .put("price", item.coffee.price)
+                .put("types", JSONArray(item.coffee.types))
+                .put("imageResId", item.coffee.imageResId)
+                .put("imageDrawable", item.coffee.imageDrawable)
+                .put("imageUrl", item.coffee.imageUrl)
                 .put("quantity", item.quantity)
             cartItemsJson.put(itemJson)
         }
@@ -85,9 +91,23 @@ object CartManager {
         val cartItemsJson = JSONArray(savedItems)
         for (index in 0 until cartItemsJson.length()) {
             val itemJson = cartItemsJson.getJSONObject(index)
-            val coffeeId = itemJson.getInt("coffeeId")
+            val typesJson = itemJson.optJSONArray("types") ?: JSONArray()
+            val types = mutableListOf<String>()
+            for (typeIndex in 0 until typesJson.length()) {
+                types.add(typesJson.optString(typeIndex))
+            }
+
+            val coffee = CoffeeModel(
+                id = itemJson.getInt("coffeeId"),
+                name = itemJson.optString("name"),
+                description = itemJson.optString("description"),
+                price = itemJson.optDouble("price"),
+                types = types,
+                imageResId = itemJson.optInt("imageResId"),
+                imageDrawable = itemJson.optString("imageDrawable"),
+                imageUrl = itemJson.optString("imageUrl")
+            )
             val quantity = itemJson.getInt("quantity")
-            val coffee = MockData.menuList.find { it.id == coffeeId } ?: continue
             items.add(CartItem(coffee, quantity))
         }
     }

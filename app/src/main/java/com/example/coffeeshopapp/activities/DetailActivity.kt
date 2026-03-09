@@ -8,12 +8,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.coffeeshopapp.R
+import com.example.coffeeshopapp.model.CoffeeModel
 import com.example.coffeeshopapp.viewmodel.CartViewModel
-import com.example.coffeeshopapp.viewmodel.CoffeeViewModel
 
 class DetailActivity : AppCompatActivity() {
-    private lateinit var coffeeViewModel: CoffeeViewModel
     private lateinit var cartViewModel: CartViewModel
     private var quantity = 1
 
@@ -21,7 +21,6 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        coffeeViewModel = ViewModelProvider(this)[CoffeeViewModel::class.java]
         cartViewModel = ViewModelProvider(this)[CartViewModel::class.java]
 
         val img: ImageView = findViewById(R.id.imgDetailCoffee)
@@ -33,15 +32,34 @@ class DetailActivity : AppCompatActivity() {
         val tvQuantityValue: TextView = findViewById(R.id.tvQuantityValue)
         val btnAdd: Button = findViewById(R.id.btnAddCart)
 
-        val coffeeId = intent.getIntExtra(MainActivity.COFFEE_ID_EXTRA, -1)
-        val coffee = coffeeViewModel.getCoffeeById(coffeeId)
+        @Suppress("DEPRECATION")
+        val coffee = intent.getSerializableExtra(MainActivity.COFFEE_EXTRA) as? CoffeeModel
 
         if (coffee != null) {
             fun updateQuantityText() {
                 tvQuantityValue.text = quantity.toString()
             }
 
-            img.setImageResource(coffee.imageResId)
+            when {
+                coffee.imageUrl.isNotBlank() -> {
+                    Glide.with(this)
+                        .load(coffee.imageUrl)
+                        .into(img)
+                }
+                coffee.imageDrawable.isNotBlank() -> {
+                    val resId = resources.getIdentifier(
+                        coffee.imageDrawable,
+                        "drawable",
+                        packageName
+                    )
+                    if (resId != 0) {
+                        img.setImageResource(resId)
+                    } else {
+                        img.setImageResource(coffee.imageResId)
+                    }
+                }
+                else -> img.setImageResource(coffee.imageResId)
+            }
             tvName.text = coffee.name
             tvPrice.text = "$${coffee.price}"
             tvDesc.text = coffee.description

@@ -8,7 +8,9 @@ data class CoffeeModel(
     val description: String,
     val price: Double,
     val types: List<String>,
-    val imageResId: Int
+    val imageResId: Int = 0,
+    val imageDrawable: String = "",
+    val imageUrl: String = ""
 ) : Serializable
 
 data class CartItem(

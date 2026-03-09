@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.coffeeshopapp.model.CoffeeModel
 
 class CoffeeAdapter(
@@ -14,7 +15,7 @@ class CoffeeAdapter(
     private val onItemClick: (CoffeeModel) -> Unit,
     private val onAddToCartClick: (CoffeeModel) -> Unit
 ) : RecyclerView.Adapter<CoffeeAdapter.CoffeeViewHolder>() {
-    private val originalCoffeeList = coffeeList.toList()
+    private var originalCoffeeList = coffeeList.toList()
     private var displayedCoffeeList = coffeeList.toList()
 
 
@@ -28,7 +29,24 @@ class CoffeeAdapter(
         val coffee = displayedCoffeeList[position]
         holder.tvName.text = coffee.name
         holder.tvPrice.text = "$${coffee.price}"
-        holder.imgCoffee.setImageResource(coffee.imageResId)
+        if (coffee.imageUrl.isNotBlank()) {
+            Glide.with(holder.imgCoffee.context)
+                .load(coffee.imageUrl)
+                .into(holder.imgCoffee)
+        } else if (coffee.imageDrawable.isNotBlank()) {
+            val resId = holder.imgCoffee.context.resources.getIdentifier(
+                coffee.imageDrawable,
+                "drawable",
+                holder.imgCoffee.context.packageName
+            )
+            if (resId != 0) {
+                holder.imgCoffee.setImageResource(resId)
+            } else {
+                holder.imgCoffee.setImageResource(coffee.imageResId)
+            }
+        } else {
+            holder.imgCoffee.setImageResource(coffee.imageResId)
+        }
 
         holder.itemView.setOnClickListener {
             onItemClick(coffee)
@@ -48,6 +66,12 @@ class CoffeeAdapter(
             val matchesType = selectedType == "all" || coffee.types.contains(selectedType)
             matchesQuery && matchesType
         }
+        notifyDataSetChanged()
+    }
+
+    fun updateData(newCoffeeList: List<CoffeeModel>) {
+        originalCoffeeList = newCoffeeList.toList()
+        displayedCoffeeList = newCoffeeList.toList()
         notifyDataSetChanged()
     }
 

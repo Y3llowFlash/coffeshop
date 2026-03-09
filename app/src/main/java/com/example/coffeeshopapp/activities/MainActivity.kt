@@ -37,12 +37,11 @@ class MainActivity : AppCompatActivity() {
         val rvCoffeeList = findViewById<RecyclerView>(R.id.rvCoffeeList)
         rvCoffeeList.layoutManager = LinearLayoutManager(this)
 
-        val coffeeList = coffeeViewModel.getCoffeeList()
         coffeeAdapter = CoffeeAdapter(
-            coffeeList,
+            emptyList(),
             onItemClick = { selectedCoffee ->
                 val intent = Intent(this, DetailActivity::class.java)
-                intent.putExtra(COFFEE_ID_EXTRA, selectedCoffee.id)
+                intent.putExtra(COFFEE_EXTRA, selectedCoffee)
                 startActivity(intent)
             },
             onAddToCartClick = { selectedCoffee ->
@@ -53,6 +52,7 @@ class MainActivity : AppCompatActivity() {
             }
         )
         rvCoffeeList.adapter = coffeeAdapter
+        reloadMenu()
 
         etSearchCoffee = findViewById(R.id.etSearchCoffee)
         etSearchCoffee.addTextChangedListener(object : TextWatcher {
@@ -85,6 +85,24 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this, CartActivity::class.java))
         }
 
+        val imgMenuEditor = findViewById<ImageView>(R.id.imgMenuEditor)
+        imgMenuEditor.setOnClickListener {
+            val user = FirebaseAuth.getInstance().currentUser
+
+            if (user == null) {
+                Toast.makeText(
+                    this,
+                    "Please sign in to edit menu",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                startActivity(Intent(this, LoginActivity::class.java))
+                return@setOnClickListener
+            }
+
+            startActivity(Intent(this, MenuEditorActivity::class.java))
+        }
+
         val btnViewCart = findViewById<Button>(R.id.btnViewCart)
         btnViewCart.setOnClickListener {
             startActivity(Intent(this, CartActivity::class.java))
@@ -99,6 +117,11 @@ class MainActivity : AppCompatActivity() {
         btnAnalytics.setOnClickListener {
             openAnalytics()
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        reloadMenu()
     }
 
     fun openAnalytics() {
@@ -135,6 +158,15 @@ class MainActivity : AppCompatActivity() {
         coffeeAdapter.filter(etSearchCoffee.text?.toString().orEmpty(), selectedType)
     }
 
+    private fun reloadMenu() {
+        coffeeViewModel.loadMenu(this) { menu ->
+            runOnUiThread {
+                coffeeAdapter.updateData(menu)
+                applyFilters()
+            }
+        }
+    }
+
     private fun updateFilterButtonState() {
         filterButtons.forEach { it.isSelected = false }
         filterButtons.find { it.tag == selectedType }?.isSelected = true
@@ -154,5 +186,6 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         const val COFFEE_ID_EXTRA = "COFFEE_ID_EXTRA"
+        const val COFFEE_EXTRA = "coffee"
     }
 }
