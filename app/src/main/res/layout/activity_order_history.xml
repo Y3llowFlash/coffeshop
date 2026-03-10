@@ -10,10 +10,10 @@
     android:paddingBottom="16dp">
 
     <TextView
-        android:id="@+id/tvMenuEditorTitle"
+        android:id="@+id/tvOrderHistoryTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Menu Editor"
+        android:text="Order History"
         android:textColor="@color/coffeeBrown"
         android:textSize="22sp"
         android:textStyle="bold"
@@ -22,50 +22,31 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvMenuEditorSubtitle"
+        android:id="@+id/tvOrderHistorySubtitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="Manage drinks, food, descriptions, pricing, and imagery."
+        android:text="Review your recent orders."
         android:textColor="@color/mochaText"
         android:textSize="13sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMenuEditorTitle" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnAddCoffee"
-        android:layout_width="wrap_content"
-        android:layout_height="44dp"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="@color/coffeeBrown"
-        android:insetTop="0dp"
-        android:insetBottom="0dp"
-        android:minWidth="0dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:text="+ Add Item"
-        android:textAllCaps="false"
-        android:textColor="@color/cream"
-        android:textSize="14sp"
-        app:cornerRadius="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvMenuEditorSubtitle" />
+        app:layout_constraintTop_toBottomOf="@id/tvOrderHistoryTitle" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMenuItems"
+        android:id="@+id/rvOrderHistory"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnBackToMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/btnAddCoffee" />
+        app:layout_constraintTop_toBottomOf="@id/tvOrderHistorySubtitle" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
-        android:id="@+id/progressMenuItems"
+        android:id="@+id/progressOrderHistory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:indeterminate="true"
@@ -73,9 +54,26 @@
         app:indicatorColor="@color/coffeeBrown"
         app:indicatorSize="48dp"
         app:trackColor="@color/latte"
-        app:layout_constraintBottom_toBottomOf="@id/rvMenuItems"
+        app:layout_constraintBottom_toBottomOf="@id/rvOrderHistory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/rvMenuItems" />
+        app:layout_constraintTop_toTopOf="@id/rvOrderHistory" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBackToMenu"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/latte"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:text="Back to Menu"
+        android:textAllCaps="false"
+        android:textColor="@color/mochaText"
+        android:textSize="15sp"
+        app:cornerRadius="14dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var coffeeAdapter: CoffeeAdapter
     private lateinit var etSearchCoffee: EditText
     private lateinit var filterButtons: List<Chip>
+    private lateinit var loadingIndicator: View
     private var selectedType: String = "all"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             }
         )
         rvCoffeeList.adapter = coffeeAdapter
+        loadingIndicator = findViewById(R.id.progressMainMenu)
 
         etSearchCoffee = findViewById(R.id.etSearchCoffee)
         etSearchCoffee.addTextChangedListener(object : TextWatcher {
@@ -164,10 +167,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun reloadMenu() {
+        setLoading(true)
         coffeeViewModel.loadMenu(this) { menu ->
             runOnUiThread {
                 coffeeAdapter.updateData(menu)
                 applyFilters()
+                setLoading(false)
             }
         }
     }
@@ -175,6 +180,15 @@ class MainActivity : AppCompatActivity() {
     private fun updateFilterButtonState() {
         filterButtons.forEach { it.isChecked = false }
         filterButtons.find { it.tag == selectedType }?.isChecked = true
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        if (!::loadingIndicator.isInitialized) return
+        loadingIndicator.visibility = if (isLoading && coffeeAdapter.itemCount == 0) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun openProtectedScreen(destination: Class<*>) {

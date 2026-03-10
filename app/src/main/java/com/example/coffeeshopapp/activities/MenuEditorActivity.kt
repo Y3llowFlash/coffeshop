@@ -29,6 +29,7 @@ class MenuEditorActivity : AppCompatActivity() {
     private var pendingImageUri: Uri? = null
     private var imagePreview: ImageView? = null
     private var pendingDialogRefresh: (() -> Unit)? = null
+    private lateinit var loadingIndicator: View
 
     private val imagePicker =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
@@ -53,6 +54,7 @@ class MenuEditorActivity : AppCompatActivity() {
         )
 
         setContentView(R.layout.activity_menu_editor)
+        loadingIndicator = findViewById(R.id.progressMenuItems)
 
         findViewById<RecyclerView>(R.id.rvMenuItems).apply {
             layoutManager = LinearLayoutManager(this@MenuEditorActivity)
@@ -67,8 +69,10 @@ class MenuEditorActivity : AppCompatActivity() {
     }
 
     private fun loadMenuItems(userId: String) {
+        setLoading(true)
         viewModel.loadMenuItems(userId) { result ->
             runOnUiThread {
+                setLoading(false)
                 if (result.isSuccess) {
                     adapter.submitList(result.getOrDefault(emptyList()))
                 } else {
@@ -263,6 +267,15 @@ class MenuEditorActivity : AppCompatActivity() {
                     Toast.makeText(this, "Failed to delete menu item", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+    }
+
+    private fun setLoading(isLoading: Boolean) {
+        if (!::loadingIndicator.isInitialized) return
+        loadingIndicator.visibility = if (isLoading && adapter.itemCount == 0) {
+            View.VISIBLE
+        } else {
+            View.GONE
         }
     }
 }
