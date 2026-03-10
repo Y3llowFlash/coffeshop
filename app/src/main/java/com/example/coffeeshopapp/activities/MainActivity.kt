@@ -14,16 +14,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeeshopapp.CoffeeAdapter
 import com.example.coffeeshopapp.R
-import com.google.firebase.auth.FirebaseAuth
+import com.google.android.material.chip.Chip
 import com.example.coffeeshopapp.viewmodel.CartViewModel
 import com.example.coffeeshopapp.viewmodel.CoffeeViewModel
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
     private lateinit var coffeeViewModel: CoffeeViewModel
     private lateinit var cartViewModel: CartViewModel
     private lateinit var coffeeAdapter: CoffeeAdapter
     private lateinit var etSearchCoffee: EditText
-    private lateinit var filterButtons: List<Button>
+    private lateinit var filterButtons: List<Chip>
     private var selectedType: String = "all"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -149,7 +150,7 @@ class MainActivity : AppCompatActivity() {
         openProtectedScreen(OrderHistoryActivity::class.java)
     }
 
-    private fun bindFilterButton(button: Button, type: String) {
+    private fun bindFilterButton(button: Chip, type: String) {
         button.setOnClickListener {
             selectedType = type
             updateFilterButtonState()
@@ -172,8 +173,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateFilterButtonState() {
-        filterButtons.forEach { it.isSelected = false }
-        filterButtons.find { it.tag == selectedType }?.isSelected = true
+        filterButtons.forEach { it.isChecked = false }
+        filterButtons.find { it.tag == selectedType }?.isChecked = true
     }
 
     private fun openProtectedScreen(destination: Class<*>) {

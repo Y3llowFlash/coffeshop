@@ -5,6 +5,6 @@
         android:color="@android:color/white"/>
 
     <!-- normal buttons -->
-    <item android:color="@color/latte"/>
+    <item android:color="@color/coffeeBrown"/>
 
 </selector>

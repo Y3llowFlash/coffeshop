@@ -77,14 +77,16 @@
 
         <ImageButton
             android:id="@+id/btnMinusQuantity"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_quantity_button"
             android:contentDescription="Decrease quantity"
             android:elevation="4dp"
-            android:padding="10dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:padding="12dp"
             android:src="@drawable/ic_remove"
-            android:tint="@android:color/white" />
+            app:tint="@android:color/white" />
 
         <TextView
             android:id="@+id/tvQuantityValue"
@@ -98,14 +100,16 @@
 
         <ImageButton
             android:id="@+id/btnPlusQuantity"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:background="@drawable/bg_quantity_button"
             android:contentDescription="Increase quantity"
             android:elevation="4dp"
-            android:padding="10dp"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:padding="12dp"
             android:src="@drawable/ic_add"
-            android:tint="@android:color/white" />
+            app:tint="@android:color/white" />
     </LinearLayout>
 
     <Button
