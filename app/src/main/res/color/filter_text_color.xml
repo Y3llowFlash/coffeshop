@@ -1,10 +1,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- selected button -->
-    <item android:state_selected="true"
+    <item android:state_checked="true"
         android:color="@android:color/white"/>
 
-    <!-- normal buttons -->
     <item android:color="@color/coffeeBrown"/>
 
 </selector>
