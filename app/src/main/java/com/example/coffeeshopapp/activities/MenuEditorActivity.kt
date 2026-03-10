@@ -94,8 +94,11 @@ class MenuEditorActivity : AppCompatActivity() {
         val categoryGroup = dialogView.findViewById<RadioGroup>(R.id.rgDrinkCategory)
         val temperatureGroup = dialogView.findViewById<RadioGroup>(R.id.rgTemperature)
         val temperatureLabel = dialogView.findViewById<TextView>(R.id.tvTemperatureLabel)
+        val imageOptionsLabel = dialogView.findViewById<TextView>(R.id.tvImageOptionsLabel)
         val rbHot = dialogView.findViewById<View>(R.id.rbTemperatureHot)
         val rbIced = dialogView.findViewById<View>(R.id.rbTemperatureIced)
+        val btnReuseCurrentImage = dialogView.findViewById<Button>(R.id.btnReuseCurrentImage)
+        val btnUploadImage = dialogView.findViewById<Button>(R.id.btnUploadImage)
 
         nameInput.setText(existingItem?.name.orEmpty())
         descriptionInput.setText(existingItem?.description.orEmpty())
@@ -143,6 +146,12 @@ class MenuEditorActivity : AppCompatActivity() {
         updateTemperatureState()
 
         imagePreview = dialogView.findViewById(R.id.imgDialogPreview)
+        val hasExistingImage = existingItem?.imageUrl?.isNotBlank() == true ||
+            existingItem?.imageDrawable?.isNotBlank() == true ||
+            (existingItem?.imageResId ?: 0) != 0
+
+        btnReuseCurrentImage.visibility = if (hasExistingImage) View.VISIBLE else View.GONE
+        imageOptionsLabel.text = if (hasExistingImage) "Image Options" else "Upload Image"
 
         fun refreshPreview() {
             val preview = imagePreview ?: return
@@ -160,7 +169,11 @@ class MenuEditorActivity : AppCompatActivity() {
 
         pendingDialogRefresh = ::refreshPreview
 
-        dialogView.findViewById<Button>(R.id.btnUploadImage).setOnClickListener {
+        btnReuseCurrentImage.setOnClickListener {
+            pendingImageUri = null
+            refreshPreview()
+        }
+        btnUploadImage.setOnClickListener {
             imagePicker.launch("image/*")
         }
         refreshPreview()
@@ -240,10 +253,12 @@ class MenuEditorActivity : AppCompatActivity() {
             description = description,
             price = price,
             types = types,
+            imageDrawable = existingItem?.imageDrawable.orEmpty(),
             imageUrl = existingItem?.imageUrl.orEmpty()
         )
+        val preserveExistingImage = existingItem != null && pendingImageUri == null
 
-        viewModel.saveMenuItem(userId, item, pendingImageUri) { result ->
+        viewModel.saveMenuItem(userId, item, pendingImageUri, preserveExistingImage) { result ->
             runOnUiThread {
                 if (result.isSuccess) {
                     pendingImageUri = null

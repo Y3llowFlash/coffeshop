@@ -137,18 +137,49 @@
                 android:scaleType="centerCrop" />
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnUploadImage"
+        <TextView
+            android:id="@+id/tvImageOptionsLabel"
             android:layout_width="match_parent"
-            android:layout_height="44dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            android:backgroundTint="@color/cream"
-            android:text="Upload Image"
-            android:textAllCaps="false"
+            android:text="Image Options"
             android:textColor="@color/coffeeBrown"
-            app:cornerRadius="16dp"
-            app:strokeColor="@color/coffeeBrown"
-            app:strokeWidth="1dp" />
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnReuseCurrentImage"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cream"
+                android:text="Reuse Current Image"
+                android:textAllCaps="false"
+                android:textColor="@color/coffeeBrown"
+                app:cornerRadius="16dp"
+                app:strokeColor="@color/coffeeBrown"
+                app:strokeWidth="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnUploadImage"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/cream"
+                android:text="Upload New Image"
+                android:textAllCaps="false"
+                android:textColor="@color/coffeeBrown"
+                app:cornerRadius="16dp"
+                app:strokeColor="@color/coffeeBrown"
+                app:strokeWidth="1dp" />
+        </LinearLayout>
 
     </LinearLayout>
 

@@ -3,6 +3,7 @@ package com.example.coffeeshopapp.repository
 import android.net.Uri
 import com.example.coffeeshopapp.model.CoffeeModel
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import java.util.UUID
 
@@ -41,10 +42,11 @@ class MenuEditorRepository(
         userId: String,
         item: CoffeeModel,
         imageUri: Uri?,
+        preserveExistingImage: Boolean,
         onResult: (Result<Unit>) -> Unit
     ) {
         if (imageUri == null) {
-            upsertMenuItem(userId, item, item.imageUrl, onResult)
+            upsertMenuItem(userId, item, null, preserveExistingImage, onResult)
             return
         }
 
@@ -61,7 +63,7 @@ class MenuEditorRepository(
                 imageRef.downloadUrl
             }
             .addOnSuccessListener { downloadUri ->
-                upsertMenuItem(userId, item, downloadUri.toString(), onResult)
+                upsertMenuItem(userId, item, downloadUri.toString(), false, onResult)
             }
             .addOnFailureListener { exception ->
                 onResult(Result.failure(exception))
@@ -89,19 +91,29 @@ class MenuEditorRepository(
     private fun upsertMenuItem(
         userId: String,
         item: CoffeeModel,
-        imageUrl: String,
+        uploadedImageUrl: String?,
+        preserveExistingImage: Boolean,
         onResult: (Result<Unit>) -> Unit
     ) {
         val itemId = item.id.toString()
-        val itemData = mapOf(
+        val itemData = mutableMapOf<String, Any>(
             "name" to item.name,
             "description" to item.description,
             "price" to item.price,
             "types" to item.types,
-            "imageDrawable" to item.imageDrawable,
-            "imageUrl" to imageUrl,
             "enabled" to true
         )
+
+        if (!preserveExistingImage) {
+            if (item.imageDrawable.isNotBlank()) {
+                itemData["imageDrawable"] = item.imageDrawable
+            }
+            if (!uploadedImageUrl.isNullOrBlank()) {
+                itemData["imageUrl"] = uploadedImageUrl
+            } else if (item.imageUrl.isNotBlank()) {
+                itemData["imageUrl"] = item.imageUrl
+            }
+        }
 
         firestore.collection(MENUS_COLLECTION)
             .document(userId)
@@ -111,7 +123,7 @@ class MenuEditorRepository(
                     .document(userId)
                     .collection(ITEMS_COLLECTION)
                     .document(itemId)
-                    .set(itemData)
+                    .set(itemData, SetOptions.merge())
             }
             .addOnSuccessListener {
                 onResult(Result.success(Unit))

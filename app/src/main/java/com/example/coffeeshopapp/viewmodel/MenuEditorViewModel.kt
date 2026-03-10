@@ -19,9 +19,10 @@ class MenuEditorViewModel(
         userId: String,
         item: CoffeeModel,
         imageUri: Uri?,
+        preserveExistingImage: Boolean,
         onResult: (Result<Unit>) -> Unit
     ) {
-        repository.saveMenuItem(userId, item, imageUri, onResult)
+        repository.saveMenuItem(userId, item, imageUri, preserveExistingImage, onResult)
     }
 
     fun deleteMenuItem(
