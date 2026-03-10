@@ -10,9 +10,11 @@
     app:strokeColor="@color/latte"
     app:strokeWidth="1dp">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         android:padding="12dp">
 
         <ImageView
@@ -21,78 +23,78 @@
             android:layout_height="80dp"
             android:contentDescription="Coffee image"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:src="@drawable/ic_launcher_background" />
 
-        <TextView
-            android:id="@+id/tvCoffeeName"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Coffee Name"
-            android:textColor="@color/coffeeBrown"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toStartOf="@id/btnAddToCart"
-            app:layout_constraintStart_toEndOf="@id/imgCoffee"
-            app:layout_constraintTop_toTopOf="@id/imgCoffee" />
+            android:layout_weight="1"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvCoffeeDescription"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="4dp"
-            android:layout_marginEnd="12dp"
-            android:ellipsize="end"
-            android:maxLines="2"
-            android:text="Coffee Description"
-            android:textColor="@color/mochaText"
-            android:textSize="13sp"
-            app:layout_constraintEnd_toStartOf="@id/btnAddToCart"
-            app:layout_constraintStart_toEndOf="@id/imgCoffee"
-            app:layout_constraintTop_toBottomOf="@id/tvCoffeeName" />
+            <TextView
+                android:id="@+id/tvCoffeeName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="Coffee Name"
+                android:textColor="@color/coffeeBrown"
+                android:textSize="16sp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvCoffeePrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_price_chip"
-            android:paddingStart="10dp"
-            android:paddingTop="5dp"
-            android:paddingEnd="10dp"
-            android:paddingBottom="5dp"
-            android:text="$0.00"
-            android:textColor="@color/mochaText"
-            android:textSize="14sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@id/imgCoffee"
-            app:layout_constraintStart_toEndOf="@id/imgCoffee" />
+            <TextView
+                android:id="@+id/tvCoffeeDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:ellipsize="end"
+                android:lineSpacingExtra="1dp"
+                android:maxLines="2"
+                android:text="Coffee Description"
+                android:textColor="#777777"
+                android:textSize="13sp" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnAddToCart"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:backgroundTint="@color/coffeeBrown"
-            android:insetTop="0dp"
-            android:insetBottom="0dp"
-            android:minWidth="0dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:text="Add"
-            android:textAllCaps="false"
-            android:textColor="@color/cream"
-            android:textSize="14sp"
-            app:cornerRadius="16dp"
-            app:layout_constraintBottom_toBottomOf="@id/imgCoffee"
-            app:layout_constraintEnd_toEndOf="parent" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/tvCoffeePrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_price_chip"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="$0.00"
+                    android:textColor="@color/mochaText"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnAddToCart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="12dp"
+                    android:backgroundTint="@color/coffeeBrown"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:minWidth="0dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp"
+                    android:text="Add"
+                    android:textAllCaps="false"
+                    android:textColor="@color/cream"
+                    android:textSize="14sp"
+                    app:cornerRadius="16dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
 </com.google.android.material.card.MaterialCardView>
