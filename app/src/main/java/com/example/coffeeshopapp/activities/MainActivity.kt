@@ -67,16 +67,18 @@ class MainActivity : AppCompatActivity() {
         filterButtons = listOf(
             findViewById(R.id.btnFilterAll),
             findViewById(R.id.btnFilterCoffee),
+            findViewById(R.id.btnFilterNonCoffee),
+            findViewById(R.id.btnFilterEats),
             findViewById(R.id.btnFilterHot),
-            findViewById(R.id.btnFilterIced),
-            findViewById(R.id.btnFilterNonCoffee)
+            findViewById(R.id.btnFilterIced)
         )
 
         bindFilterButton(findViewById(R.id.btnFilterAll), "all")
         bindFilterButton(findViewById(R.id.btnFilterCoffee), "coffee")
+        bindFilterButton(findViewById(R.id.btnFilterNonCoffee), "non_coffee")
+        bindFilterButton(findViewById(R.id.btnFilterEats), "eats")
         bindFilterButton(findViewById(R.id.btnFilterHot), "hot")
         bindFilterButton(findViewById(R.id.btnFilterIced), "iced")
-        bindFilterButton(findViewById(R.id.btnFilterNonCoffee), "non_coffee")
         updateFilterButtonState()
 
         val imgCart = findViewById<ImageView>(R.id.imgCart)

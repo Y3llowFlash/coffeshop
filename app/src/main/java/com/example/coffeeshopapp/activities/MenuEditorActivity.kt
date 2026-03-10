@@ -3,12 +3,14 @@ package com.example.coffeeshopapp.activities
 import android.net.Uri
 import android.os.Bundle
 import android.text.InputType
+import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.CheckBox
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RadioButton
+import android.widget.RadioGroup
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
@@ -117,12 +119,62 @@ class MenuEditorActivity : AppCompatActivity() {
             InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
         )
 
-        val typeCheckboxes = linkedMapOf(
-            "coffee" to CheckBox(this).apply { text = "coffee"; isChecked = existingItem?.types?.contains("coffee") == true },
-            "hot" to CheckBox(this).apply { text = "hot"; isChecked = existingItem?.types?.contains("hot") == true },
-            "iced" to CheckBox(this).apply { text = "iced"; isChecked = existingItem?.types?.contains("iced") == true },
-            "non_coffee" to CheckBox(this).apply { text = "non_coffee"; isChecked = existingItem?.types?.contains("non_coffee") == true }
-        )
+        val categoryGroup = RadioGroup(this).apply {
+            orientation = RadioGroup.VERTICAL
+        }
+        val rbCoffee = RadioButton(this).apply { text = "coffee"; id = View.generateViewId() }
+        val rbNonCoffee = RadioButton(this).apply { text = "non_coffee"; id = View.generateViewId() }
+        val rbEats = RadioButton(this).apply { text = "eats"; id = View.generateViewId() }
+        categoryGroup.addView(rbCoffee)
+        categoryGroup.addView(rbNonCoffee)
+        categoryGroup.addView(rbEats)
+
+        val temperatureGroup = RadioGroup(this).apply {
+            orientation = RadioGroup.VERTICAL
+        }
+        val rbHot = RadioButton(this).apply { text = "hot"; id = View.generateViewId() }
+        val rbIced = RadioButton(this).apply { text = "iced"; id = View.generateViewId() }
+        temperatureGroup.addView(rbHot)
+        temperatureGroup.addView(rbIced)
+
+        val existingCategory = when {
+            existingItem?.types?.contains("eats") == true -> "eats"
+            existingItem?.types?.contains("non_coffee") == true -> "non_coffee"
+            else -> "coffee"
+        }
+        val existingTemperature = when {
+            existingItem?.types?.contains("iced") == true -> "iced"
+            existingItem?.types?.contains("hot") == true -> "hot"
+            else -> null
+        }
+
+        when (existingCategory) {
+            "eats" -> categoryGroup.check(rbEats.id)
+            "non_coffee" -> categoryGroup.check(rbNonCoffee.id)
+            else -> categoryGroup.check(rbCoffee.id)
+        }
+
+        when (existingTemperature) {
+            "iced" -> temperatureGroup.check(rbIced.id)
+            else -> temperatureGroup.check(rbHot.id)
+        }
+
+        fun updateTemperatureState() {
+            val isEats = categoryGroup.checkedRadioButtonId == rbEats.id
+            temperatureGroup.isEnabled = !isEats
+            rbHot.isEnabled = !isEats
+            rbIced.isEnabled = !isEats
+            if (isEats) {
+                temperatureGroup.clearCheck()
+            } else if (temperatureGroup.checkedRadioButtonId == View.NO_ID) {
+                temperatureGroup.check(rbHot.id)
+            }
+        }
+
+        categoryGroup.setOnCheckedChangeListener { _, _ ->
+            updateTemperatureState()
+        }
+        updateTemperatureState()
 
         imagePreview = ImageView(this).apply {
             layoutParams = LinearLayout.LayoutParams(
@@ -151,8 +203,13 @@ class MenuEditorActivity : AppCompatActivity() {
         container.addView(nameInput)
         container.addView(descriptionInput)
         container.addView(priceInput)
-        container.addView(TextView(this).apply { text = "Types" })
-        typeCheckboxes.values.forEach(container::addView)
+        container.addView(TextView(this).apply { text = "Drink Category" })
+        container.addView(categoryGroup)
+        container.addView(TextView(this).apply {
+            text = "Temperature"
+            setPadding(0, 16, 0, 0)
+        })
+        container.addView(temperatureGroup)
         container.addView(imagePreview)
         container.addView(Button(this).apply {
             text = "Upload Image"
@@ -170,7 +227,19 @@ class MenuEditorActivity : AppCompatActivity() {
             .setTitle(if (existingItem == null) "Add Coffee" else "Edit Coffee")
             .setView(dialogView)
             .setPositiveButton("Save") { _, _ ->
-                saveMenuItem(existingItem, nameInput, descriptionInput, priceInput, typeCheckboxes)
+                saveMenuItem(
+                    existingItem,
+                    nameInput,
+                    descriptionInput,
+                    priceInput,
+                    categoryGroup,
+                    temperatureGroup,
+                    rbCoffee.id,
+                    rbNonCoffee.id,
+                    rbEats.id,
+                    rbHot.id,
+                    rbIced.id
+                )
             }
             .setNegativeButton("Cancel", null)
             .show()
@@ -181,13 +250,34 @@ class MenuEditorActivity : AppCompatActivity() {
         nameInput: EditText,
         descriptionInput: EditText,
         priceInput: EditText,
-        typeCheckboxes: Map<String, CheckBox>
+        categoryGroup: RadioGroup,
+        temperatureGroup: RadioGroup,
+        coffeeId: Int,
+        nonCoffeeId: Int,
+        eatsId: Int,
+        hotId: Int,
+        icedId: Int
     ) {
         val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val name = nameInput.text.toString().trim()
         val description = descriptionInput.text.toString().trim()
         val price = priceInput.text.toString().toDoubleOrNull()
-        val types = typeCheckboxes.filterValues { it.isChecked }.keys.toList()
+        val category = when (categoryGroup.checkedRadioButtonId) {
+            coffeeId -> "coffee"
+            nonCoffeeId -> "non_coffee"
+            eatsId -> "eats"
+            else -> null
+        }
+        val temperature = when (temperatureGroup.checkedRadioButtonId) {
+            hotId -> "hot"
+            icedId -> "iced"
+            else -> null
+        }
+        val types = when (category) {
+            "coffee", "non_coffee" -> listOfNotNull(category, temperature)
+            "eats" -> listOf("eats")
+            else -> emptyList()
+        }
 
         if (name.isBlank() || description.isBlank() || price == null || types.isEmpty()) {
             Toast.makeText(this, "Please complete all fields", Toast.LENGTH_SHORT).show()
