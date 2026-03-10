@@ -28,6 +28,7 @@ class CoffeeAdapter(
     override fun onBindViewHolder(holder: CoffeeViewHolder, position: Int) {
         val coffee = displayedCoffeeList[position]
         holder.tvName.text = coffee.name
+        holder.tvDescription.text = coffee.description
         holder.tvPrice.text = "${coffee.price} MMK"
         if (coffee.imageUrl.isNotBlank()) {
             Glide.with(holder.imgCoffee.context)
@@ -52,6 +53,18 @@ class CoffeeAdapter(
             onItemClick(coffee)
         }
         holder.btnAddToCart.setOnClickListener {
+            holder.itemView.animate()
+                .scaleX(0.95f)
+                .scaleY(0.95f)
+                .setDuration(100)
+                .withEndAction {
+                    holder.itemView.animate()
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .setDuration(100)
+                        .start()
+                }
+                .start()
             onAddToCartClick(coffee)
         }
     }
@@ -78,6 +91,7 @@ class CoffeeAdapter(
     class CoffeeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imgCoffee: ImageView = itemView.findViewById(R.id.imgCoffee)
         val tvName: TextView = itemView.findViewById(R.id.tvCoffeeName)
+        val tvDescription: TextView = itemView.findViewById(R.id.tvCoffeeDescription)
         val tvPrice: TextView = itemView.findViewById(R.id.tvCoffeePrice)
         val btnAddToCart: Button = itemView.findViewById(R.id.btnAddToCart)
     }

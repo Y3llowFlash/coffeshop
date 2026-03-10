@@ -4,10 +4,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/cream"
-    android:paddingStart="24dp"
-    android:paddingTop="24dp"
-    android:paddingEnd="24dp"
-    android:paddingBottom="24dp">
+    android:paddingStart="16dp"
+    android:paddingTop="16dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp">
 
     <TextView
         android:id="@+id/tvHeaderTitle"
@@ -16,11 +16,12 @@
         android:layout_marginEnd="12dp"
         android:text="Coffee Menu"
         android:textColor="@color/coffeeBrown"
-        android:textSize="28sp"
+        android:textSize="22sp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/imgCart"
         app:layout_constraintEnd_toStartOf="@+id/imgMenuEditor"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@id/imgCart" />
 
     <ImageView
         android:id="@+id/imgMenuEditor"
@@ -71,6 +72,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -90,10 +93,13 @@
                 android:background="@drawable/bg_filter_button"
                 android:backgroundTint="@null"
                 android:minWidth="0dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:tag="all"
-                android:text="All"
+                android:text="≡ All"
                 android:textAllCaps="false"
                 android:textColor="@color/filter_text_color"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <Button
@@ -104,10 +110,13 @@
                 android:background="@drawable/bg_filter_button"
                 android:backgroundTint="@null"
                 android:minWidth="0dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:tag="coffee"
-                android:text="Coffee"
+                android:text="☕ Coffee"
                 android:textAllCaps="false"
                 android:textColor="@color/filter_text_color"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <Button
@@ -118,10 +127,13 @@
                 android:background="@drawable/bg_filter_button"
                 android:backgroundTint="@null"
                 android:minWidth="0dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:tag="hot"
-                android:text="Hot"
+                android:text="🔥 Hot"
                 android:textAllCaps="false"
                 android:textColor="@color/filter_text_color"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <Button
@@ -132,10 +144,13 @@
                 android:background="@drawable/bg_filter_button"
                 android:backgroundTint="@null"
                 android:minWidth="0dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:tag="iced"
-                android:text="Iced"
+                android:text="❄️ Iced"
                 android:textAllCaps="false"
                 android:textColor="@color/filter_text_color"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <Button
@@ -145,10 +160,13 @@
                 android:background="@drawable/bg_filter_button"
                 android:backgroundTint="@null"
                 android:minWidth="0dp"
+                android:paddingStart="18dp"
+                android:paddingEnd="18dp"
                 android:tag="non_coffee"
-                android:text="Non Coffee"
+                android:text="🥛 Non Coffee"
                 android:textAllCaps="false"
                 android:textColor="@color/filter_text_color"
+                android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>
     </HorizontalScrollView>
@@ -157,67 +175,79 @@
         android:id="@+id/rvCoffeeList"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
-        android:layout_marginTop="12dp"
-        android:paddingBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@id/footerButtons"
+        android:paddingBottom="100dp"
+        app:layout_constraintBottom_toTopOf="@id/btnViewCart"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/filterScrollView" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnViewCart"
+        android:layout_width="wrap_content"
+        android:layout_height="52dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="@color/coffeeBrown"
+        android:elevation="8dp"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        android:minWidth="148dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:text="View Cart"
+        android:textAllCaps="false"
+        android:textColor="@color/cream"
+        android:textSize="16sp"
+        app:cornerRadius="26dp"
+        app:icon="@drawable/ic_cart"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconTint="@color/cream"
+        app:layout_constraintBottom_toTopOf="@id/footerButtons"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/footerButtons"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:orientation="vertical"
+        android:layout_marginBottom="24dp"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
-            android:id="@+id/btnViewCart"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:backgroundTint="@color/coffeeBrown"
-            android:text="View Cart"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnOrderHistory"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/latte"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Order History"
             android:textAllCaps="false"
-            android:textColor="@color/cream"
-            android:textSize="17sp"
-            app:cornerRadius="12dp" />
+            android:textColor="@color/mochaText"
+            android:textSize="15sp"
+            app:cornerRadius="14dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:orientation="horizontal">
-
-            <Button
-                android:id="@+id/btnOrderHistory"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginEnd="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/latte"
-                android:text="Order History"
-                android:textAllCaps="false"
-                android:textColor="@color/mochaText"
-                android:textSize="16sp"
-                app:cornerRadius="12dp" />
-
-            <Button
-                android:id="@+id/btnAnalytics"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_weight="1"
-                android:backgroundTint="@color/latte"
-                android:text="Sales Analytics"
-                android:textAllCaps="false"
-                android:textColor="@color/mochaText"
-                android:textSize="16sp"
-                app:cornerRadius="12dp" />
-        </LinearLayout>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAnalytics"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/latte"
+            android:insetTop="0dp"
+            android:insetBottom="0dp"
+            android:text="Sales Analytics"
+            android:textAllCaps="false"
+            android:textColor="@color/mochaText"
+            android:textSize="15sp"
+            app:cornerRadius="14dp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
