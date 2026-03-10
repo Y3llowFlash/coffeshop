@@ -2,16 +2,10 @@ package com.example.coffeeshopapp.activities
 
 import android.net.Uri
 import android.os.Bundle
-import android.text.InputType
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RadioButton
 import android.widget.RadioGroup
-import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
@@ -25,6 +19,7 @@ import com.example.coffeeshopapp.MenuEditorAdapter
 import com.example.coffeeshopapp.R
 import com.example.coffeeshopapp.model.CoffeeModel
 import com.example.coffeeshopapp.viewmodel.MenuEditorViewModel
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
 import java.util.UUID
 
@@ -57,38 +52,18 @@ class MenuEditorActivity : AppCompatActivity() {
             onDeleteClick = { deleteMenuItem(userId, it) }
         )
 
-        setContentView(createContentView())
-        loadMenuItems(userId)
-    }
+        setContentView(R.layout.activity_menu_editor)
 
-    private fun createContentView(): LinearLayout {
-        val recyclerView = RecyclerView(this).apply {
+        findViewById<RecyclerView>(R.id.rvMenuItems).apply {
             layoutManager = LinearLayoutManager(this@MenuEditorActivity)
             adapter = this@MenuEditorActivity.adapter
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                0,
-                1f
-            )
         }
 
-        return LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(32, 32, 32, 32)
-            layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-
-            addView(Button(context).apply {
-                text = "+ Add Coffee"
-                setOnClickListener {
-                    showMenuItemDialog(null)
-                }
-            })
-
-            addView(recyclerView)
+        findViewById<Button>(R.id.btnAddCoffee).setOnClickListener {
+            showMenuItemDialog(null)
         }
+
+        loadMenuItems(userId)
     }
 
     private fun loadMenuItems(userId: String) {
@@ -106,36 +81,21 @@ class MenuEditorActivity : AppCompatActivity() {
     private fun showMenuItemDialog(existingItem: CoffeeModel?) {
         pendingImageUri = null
 
-        val container = LinearLayout(this).apply {
-            orientation = LinearLayout.VERTICAL
-            setPadding(32, 24, 32, 24)
-        }
+        val dialogView = layoutInflater.inflate(R.layout.dialog_menu_item_editor, null)
 
-        val nameInput = createTextInput("Name", existingItem?.name.orEmpty())
-        val descriptionInput = createTextInput("Description", existingItem?.description.orEmpty())
-        val priceInput = createTextInput(
-            "Price",
-            existingItem?.price?.toString().orEmpty(),
-            InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_FLAG_DECIMAL
-        )
+        val nameInput = dialogView.findViewById<TextInputEditText>(R.id.etMenuItemName)
+        val descriptionInput =
+            dialogView.findViewById<TextInputEditText>(R.id.etMenuItemDescription)
+        val priceInput = dialogView.findViewById<TextInputEditText>(R.id.etMenuItemPrice)
+        val categoryGroup = dialogView.findViewById<RadioGroup>(R.id.rgDrinkCategory)
+        val temperatureGroup = dialogView.findViewById<RadioGroup>(R.id.rgTemperature)
+        val temperatureLabel = dialogView.findViewById<TextView>(R.id.tvTemperatureLabel)
+        val rbHot = dialogView.findViewById<View>(R.id.rbTemperatureHot)
+        val rbIced = dialogView.findViewById<View>(R.id.rbTemperatureIced)
 
-        val categoryGroup = RadioGroup(this).apply {
-            orientation = RadioGroup.VERTICAL
-        }
-        val rbCoffee = RadioButton(this).apply { text = "coffee"; id = View.generateViewId() }
-        val rbNonCoffee = RadioButton(this).apply { text = "non_coffee"; id = View.generateViewId() }
-        val rbEats = RadioButton(this).apply { text = "eats"; id = View.generateViewId() }
-        categoryGroup.addView(rbCoffee)
-        categoryGroup.addView(rbNonCoffee)
-        categoryGroup.addView(rbEats)
-
-        val temperatureGroup = RadioGroup(this).apply {
-            orientation = RadioGroup.VERTICAL
-        }
-        val rbHot = RadioButton(this).apply { text = "hot"; id = View.generateViewId() }
-        val rbIced = RadioButton(this).apply { text = "iced"; id = View.generateViewId() }
-        temperatureGroup.addView(rbHot)
-        temperatureGroup.addView(rbIced)
+        nameInput.setText(existingItem?.name.orEmpty())
+        descriptionInput.setText(existingItem?.description.orEmpty())
+        priceInput.setText(existingItem?.price?.toString().orEmpty())
 
         val existingCategory = when {
             existingItem?.types?.contains("eats") == true -> "eats"
@@ -149,25 +109,27 @@ class MenuEditorActivity : AppCompatActivity() {
         }
 
         when (existingCategory) {
-            "eats" -> categoryGroup.check(rbEats.id)
-            "non_coffee" -> categoryGroup.check(rbNonCoffee.id)
-            else -> categoryGroup.check(rbCoffee.id)
+            "eats" -> categoryGroup.check(R.id.rbCategoryEats)
+            "non_coffee" -> categoryGroup.check(R.id.rbCategoryNonCoffee)
+            else -> categoryGroup.check(R.id.rbCategoryCoffee)
         }
 
         when (existingTemperature) {
-            "iced" -> temperatureGroup.check(rbIced.id)
-            else -> temperatureGroup.check(rbHot.id)
+            "iced" -> temperatureGroup.check(R.id.rbTemperatureIced)
+            else -> temperatureGroup.check(R.id.rbTemperatureHot)
         }
 
         fun updateTemperatureState() {
-            val isEats = categoryGroup.checkedRadioButtonId == rbEats.id
+            val isEats = categoryGroup.checkedRadioButtonId == R.id.rbCategoryEats
             temperatureGroup.isEnabled = !isEats
             rbHot.isEnabled = !isEats
             rbIced.isEnabled = !isEats
+            temperatureLabel.alpha = if (isEats) 0.45f else 1f
+            temperatureGroup.alpha = if (isEats) 0.45f else 1f
             if (isEats) {
                 temperatureGroup.clearCheck()
             } else if (temperatureGroup.checkedRadioButtonId == View.NO_ID) {
-                temperatureGroup.check(rbHot.id)
+                temperatureGroup.check(R.id.rbTemperatureHot)
             }
         }
 
@@ -176,13 +138,7 @@ class MenuEditorActivity : AppCompatActivity() {
         }
         updateTemperatureState()
 
-        imagePreview = ImageView(this).apply {
-            layoutParams = LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                420
-            )
-            scaleType = ImageView.ScaleType.CENTER_CROP
-        }
+        imagePreview = dialogView.findViewById(R.id.imgDialogPreview)
 
         fun refreshPreview() {
             val preview = imagePreview ?: return
@@ -200,56 +156,46 @@ class MenuEditorActivity : AppCompatActivity() {
 
         pendingDialogRefresh = ::refreshPreview
 
-        container.addView(nameInput)
-        container.addView(descriptionInput)
-        container.addView(priceInput)
-        container.addView(TextView(this).apply { text = "Drink Category" })
-        container.addView(categoryGroup)
-        container.addView(TextView(this).apply {
-            text = "Temperature"
-            setPadding(0, 16, 0, 0)
-        })
-        container.addView(temperatureGroup)
-        container.addView(imagePreview)
-        container.addView(Button(this).apply {
-            text = "Upload Image"
-            setOnClickListener {
-                imagePicker.launch("image/*")
-            }
-        })
+        dialogView.findViewById<Button>(R.id.btnUploadImage).setOnClickListener {
+            imagePicker.launch("image/*")
+        }
         refreshPreview()
 
-        val dialogView = ScrollView(this).apply {
-            addView(container)
-        }
-
-        AlertDialog.Builder(this)
+        val dialog = AlertDialog.Builder(this)
             .setTitle(if (existingItem == null) "Add Coffee" else "Edit Coffee")
             .setView(dialogView)
-            .setPositiveButton("Save") { _, _ ->
-                saveMenuItem(
+            .setPositiveButton("Save", null)
+            .setNegativeButton("Cancel", null)
+            .create()
+
+        dialog.setOnShowListener {
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setOnClickListener {
+                val didStartSave = saveMenuItem(
                     existingItem,
                     nameInput,
                     descriptionInput,
                     priceInput,
                     categoryGroup,
                     temperatureGroup,
-                    rbCoffee.id,
-                    rbNonCoffee.id,
-                    rbEats.id,
-                    rbHot.id,
-                    rbIced.id
+                    R.id.rbCategoryCoffee,
+                    R.id.rbCategoryNonCoffee,
+                    R.id.rbCategoryEats,
+                    R.id.rbTemperatureHot,
+                    R.id.rbTemperatureIced
                 )
+                if (didStartSave) {
+                    dialog.dismiss()
+                }
             }
-            .setNegativeButton("Cancel", null)
-            .show()
+        }
+        dialog.show()
     }
 
     private fun saveMenuItem(
         existingItem: CoffeeModel?,
-        nameInput: EditText,
-        descriptionInput: EditText,
-        priceInput: EditText,
+        nameInput: TextInputEditText,
+        descriptionInput: TextInputEditText,
+        priceInput: TextInputEditText,
         categoryGroup: RadioGroup,
         temperatureGroup: RadioGroup,
         coffeeId: Int,
@@ -257,8 +203,8 @@ class MenuEditorActivity : AppCompatActivity() {
         eatsId: Int,
         hotId: Int,
         icedId: Int
-    ) {
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+    ): Boolean {
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return false
         val name = nameInput.text.toString().trim()
         val description = descriptionInput.text.toString().trim()
         val price = priceInput.text.toString().toDoubleOrNull()
@@ -281,7 +227,7 @@ class MenuEditorActivity : AppCompatActivity() {
 
         if (name.isBlank() || description.isBlank() || price == null || types.isEmpty()) {
             Toast.makeText(this, "Please complete all fields", Toast.LENGTH_SHORT).show()
-            return
+            return false
         }
 
         val item = CoffeeModel(
@@ -304,6 +250,7 @@ class MenuEditorActivity : AppCompatActivity() {
                 }
             }
         }
+        return true
     }
 
     private fun deleteMenuItem(userId: String, item: CoffeeModel) {
@@ -316,18 +263,6 @@ class MenuEditorActivity : AppCompatActivity() {
                     Toast.makeText(this, "Failed to delete menu item", Toast.LENGTH_SHORT).show()
                 }
             }
-        }
-    }
-
-    private fun createTextInput(
-        hint: String,
-        value: String,
-        inputType: Int = InputType.TYPE_CLASS_TEXT
-    ): EditText {
-        return EditText(this).apply {
-            this.hint = hint
-            setText(value)
-            this.inputType = inputType
         }
     }
 }
