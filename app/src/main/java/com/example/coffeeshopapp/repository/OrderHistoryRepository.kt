@@ -4,18 +4,29 @@ import com.example.coffeeshopapp.model.Order
 import com.example.coffeeshopapp.model.OrderItem
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
+import java.util.Date
 
 class OrderHistoryRepository(
     private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
 ) {
     fun getOrdersForUser(
         userId: String,
+        startDate: Date? = null,
+        endDateExclusive: Date? = null,
         onResult: (Result<List<Order>>) -> Unit
     ) {
-        firestore.collection(ORDERS_COLLECTION)
+        var query = firestore.collection(ORDERS_COLLECTION)
             .whereEqualTo("userId", userId)
             .orderBy("createdAt", Query.Direction.DESCENDING)
-            .get()
+
+        if (startDate != null) {
+            query = query.whereGreaterThanOrEqualTo("createdAt", startDate)
+        }
+        if (endDateExclusive != null) {
+            query = query.whereLessThan("createdAt", endDateExclusive)
+        }
+
+        query.get()
             .addOnSuccessListener { snapshot ->
                 val orders = snapshot.documents.map { document ->
                     val items = (document.get("items") as? List<Map<String, Any?>>)

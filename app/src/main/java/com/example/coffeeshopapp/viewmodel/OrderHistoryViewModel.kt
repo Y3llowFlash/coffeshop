@@ -4,18 +4,23 @@ import androidx.lifecycle.ViewModel
 import com.example.coffeeshopapp.model.Order
 import com.example.coffeeshopapp.repository.OrderHistoryRepository
 import com.google.firebase.auth.FirebaseAuth
+import java.util.Date
 
 class OrderHistoryViewModel(
     private val repository: OrderHistoryRepository = OrderHistoryRepository(),
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) : ViewModel() {
-    fun loadUserOrders(onResult: (Result<List<Order>>) -> Unit) {
+    fun loadUserOrders(
+        startDate: Date? = null,
+        endDateExclusive: Date? = null,
+        onResult: (Result<List<Order>>) -> Unit
+    ) {
         val userId = auth.currentUser?.uid
         if (userId.isNullOrBlank()) {
             onResult(Result.success(emptyList()))
             return
         }
 
-        repository.getOrdersForUser(userId, onResult)
+        repository.getOrdersForUser(userId, startDate, endDateExclusive, onResult)
     }
 }

@@ -33,17 +33,133 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvOrderHistoryTitle" />
 
+    <HorizontalScrollView
+        android:id="@+id/filterScrollView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:scrollbars="none"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvOrderHistorySubtitle">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/orderHistoryFilterChipGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            app:chipSpacingHorizontal="8dp"
+            app:singleSelection="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterToday"
+                style="@style/CoffeeFilterChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:tag="today"
+                android:text="Today"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:checkedIconVisible="false"
+                app:chipMinHeight="44dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterMonth"
+                style="@style/CoffeeFilterChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:tag="month"
+                android:text="Month"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:checkedIconVisible="false"
+                app:chipMinHeight="44dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterYear"
+                style="@style/CoffeeFilterChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:tag="year"
+                android:text="Year"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:checkedIconVisible="false"
+                app:chipMinHeight="44dp" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFilterCustom"
+                style="@style/CoffeeFilterChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="48dp"
+                android:tag="custom"
+                android:text="Custom"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                app:checkedIconVisible="false"
+                app:chipMinHeight="44dp" />
+        </com.google.android.material.chip.ChipGroup>
+    </HorizontalScrollView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardOrderSummary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="2dp"
+        app:strokeColor="@color/latte"
+        app:strokeWidth="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/filterScrollView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvSummaryOrders"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Orders Today: 0"
+                android:textColor="@color/coffeeBrown"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvSummaryRevenue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Revenue: 0 MMK"
+                android:textColor="@color/mochaText"
+                android:textSize="14sp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvOrderHistory"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp"
         app:layout_constraintBottom_toTopOf="@id/btnBackToMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvOrderHistorySubtitle" />
+        app:layout_constraintTop_toBottomOf="@id/cardOrderSummary" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
         android:id="@+id/progressOrderHistory"
