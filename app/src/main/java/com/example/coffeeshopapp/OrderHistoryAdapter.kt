@@ -74,7 +74,7 @@ class OrderHistoryAdapter(
         holder.itemsView.text = order.items.joinToString(separator = "\n") { item ->
             "${item.name} x${item.quantity}"
         }
-        holder.totalView.text = "Total: $${String.format("%.2f", order.totalPrice)}"
+        holder.totalView.text = "Total: ${formatMMK(order.totalPrice)}"
     }
 
     override fun getItemCount(): Int = orders.size

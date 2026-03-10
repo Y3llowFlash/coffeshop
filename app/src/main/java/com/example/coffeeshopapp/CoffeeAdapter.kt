@@ -29,7 +29,7 @@ class CoffeeAdapter(
         val coffee = displayedCoffeeList[position]
         holder.tvName.text = coffee.name
         holder.tvDescription.text = coffee.description
-        holder.tvPrice.text = "${coffee.price} MMK"
+        holder.tvPrice.text = formatMMK(coffee.price)
         if (coffee.imageUrl.isNotBlank()) {
             Glide.with(holder.imgCoffee.context)
                 .load(coffee.imageUrl)

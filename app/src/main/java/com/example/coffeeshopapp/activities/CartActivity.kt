@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.coffeeshopapp.CartAdapter
 import com.example.coffeeshopapp.R
+import com.example.coffeeshopapp.formatMMK
 import com.example.coffeeshopapp.viewmodel.CartViewModel
 
 class CartActivity : AppCompatActivity() {
@@ -67,7 +68,7 @@ class CartActivity : AppCompatActivity() {
 
     private fun refreshCartState() {
         val total = cartViewModel.getTotalPrice()
-        tvTotal.text = "Total: ${total} MMK"
+        tvTotal.text = "Total: ${formatMMK(total)}"
         if (cartViewModel.getCartItems().isEmpty()) {
             tvCartEmpty.visibility = View.VISIBLE
             rvCart.visibility = View.GONE

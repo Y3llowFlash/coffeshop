@@ -30,6 +30,7 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.github.mikephil.charting.formatter.ValueFormatter
 import com.google.firebase.auth.FirebaseAuth
+import kotlin.math.roundToInt
 
 class AnalyticsActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -275,7 +276,7 @@ class AnalyticsActivity : AppCompatActivity() {
 
     private class CurrencyValueFormatter : ValueFormatter() {
         override fun getFormattedValue(value: Float): String {
-            return "${value} MMK"
+            return "${value.roundToInt()} MMK"
         }
     }
 }

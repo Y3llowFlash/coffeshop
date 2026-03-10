@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.example.coffeeshopapp.formatMMK
 import com.example.coffeeshopapp.model.CartItem
 import com.example.coffeeshopapp.viewmodel.CartViewModel
 import com.example.coffeeshopapp.viewmodel.CheckoutViewModel
@@ -64,7 +65,7 @@ class CheckoutActivity : AppCompatActivity() {
             })
 
             addView(TextView(context).apply {
-                text = "Total: $${String.format("%.2f", totalPrice)}"
+                text = "Total: ${formatMMK(totalPrice)}"
                 textSize = 22f
                 setPadding(0, 0, 0, 32)
             })
@@ -80,7 +81,7 @@ class CheckoutActivity : AppCompatActivity() {
 
     private fun buildOrderSummary(): String {
         return checkoutItems.joinToString(separator = "\n") { item ->
-            "${item.coffee.name} x${item.quantity} - $${String.format("%.2f", item.coffee.price)}"
+            "${item.coffee.name} x${item.quantity} - ${formatMMK(item.coffee.price)}"
         }
     }
 
@@ -100,7 +101,7 @@ class CheckoutActivity : AppCompatActivity() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Order Successful!")
         builder.setMessage(
-            "Your coffee is being prepared.\nTotal: $${String.format("%.2f", totalPrice)}"
+            "Your coffee is being prepared.\nTotal: ${formatMMK(totalPrice)}"
         )
         builder.setPositiveButton("OK") { _: DialogInterface, _: Int ->
             cartViewModel.clearCart()

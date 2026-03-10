@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.coffeeshopapp.R
+import com.example.coffeeshopapp.formatMMK
 import com.example.coffeeshopapp.model.CoffeeModel
 import com.example.coffeeshopapp.viewmodel.CartViewModel
 
@@ -61,7 +62,7 @@ class DetailActivity : AppCompatActivity() {
                 else -> img.setImageResource(coffee.imageResId)
             }
             tvName.text = coffee.name
-            tvPrice.text = "$${coffee.price}"
+            tvPrice.text = formatMMK(coffee.price)
             tvDesc.text = coffee.description
             updateQuantityText()
 
