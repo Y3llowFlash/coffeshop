@@ -9,45 +9,75 @@
     android:paddingEnd="16dp"
     android:paddingBottom="16dp">
 
-    <TextView
-        android:id="@+id/tvHeaderTitle"
+    <LinearLayout
+        android:id="@+id/headerRow"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:text="Coffee Menu"
-        android:textColor="@color/coffeeBrown"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@id/imgCart"
-        app:layout_constraintEnd_toStartOf="@+id/imgMenuEditor"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/imgCart" />
-
-    <ImageView
-        android:id="@+id/imgMenuEditor"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginEnd="12dp"
-        android:background="@drawable/bg_cart_icon"
-        android:contentDescription="Open menu editor"
-        android:padding="10dp"
-        android:src="@android:drawable/ic_menu_edit"
-        app:layout_constraintBottom_toBottomOf="@id/imgCart"
-        app:layout_constraintEnd_toStartOf="@+id/imgCart"
-        app:layout_constraintTop_toTopOf="@id/imgCart"
-        app:tint="@color/coffeeBrown" />
-
-    <ImageView
-        android:id="@+id/imgCart"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:background="@drawable/bg_cart_icon"
-        android:contentDescription="Open cart"
-        android:padding="10dp"
-        android:src="@drawable/ic_cart"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tint="@color/coffeeBrown" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvHeaderTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="12dp"
+            android:text="Coffee Menu"
+            android:textColor="@color/coffeeBrown"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imgMenuEditor"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_cart_icon"
+            android:contentDescription="Open menu editor"
+            android:padding="10dp"
+            android:src="@android:drawable/ic_menu_edit"
+            android:tint="@color/coffeeBrown" />
+
+        <FrameLayout
+            android:id="@+id/cartIconContainer"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:clipChildren="false"
+            android:clipToPadding="false">
+
+            <ImageView
+                android:id="@+id/imgCart"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:background="@drawable/bg_cart_icon"
+                android:contentDescription="Open cart"
+                android:padding="10dp"
+                android:src="@drawable/ic_cart"
+                android:tint="@color/coffeeBrown" />
+
+            <TextView
+                android:id="@+id/tvCartBadge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="-2dp"
+                android:layout_marginEnd="-2dp"
+                android:background="@drawable/bg_cart_badge"
+                android:gravity="center"
+                android:minWidth="18dp"
+                android:minHeight="18dp"
+                android:paddingStart="4dp"
+                android:paddingEnd="4dp"
+                android:textColor="@color/cream"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:visibility="gone" />
+
+        </FrameLayout>
+    </LinearLayout>
 
     <EditText
         android:id="@+id/etSearchCoffee"
@@ -65,7 +95,7 @@
         android:textColorHint="@color/latte"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHeaderTitle" />
+        app:layout_constraintTop_toBottomOf="@id/headerRow" />
 
     <HorizontalScrollView
         android:id="@+id/filterScrollView"

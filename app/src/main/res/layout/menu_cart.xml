@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:clipChildren="false"
+    android:clipToPadding="false">
+
+    <ImageView
+        android:id="@+id/imgCart"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/bg_cart_icon"
+        android:contentDescription="Open cart"
+        android:padding="10dp"
+        android:src="@drawable/ic_cart"
+        android:tint="@color/coffeeBrown" />
+
+    <TextView
+        android:id="@+id/tvCartBadge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:layout_marginTop="-2dp"
+        android:layout_marginEnd="-2dp"
+        android:background="@drawable/bg_cart_badge"
+        android:gravity="center"
+        android:minWidth="18dp"
+        android:minHeight="18dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:textColor="@color/cream"
+        android:textSize="10sp"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+</FrameLayout>

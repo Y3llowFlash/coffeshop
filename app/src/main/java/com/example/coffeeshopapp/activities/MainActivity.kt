@@ -8,6 +8,7 @@ import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var etSearchCoffee: EditText
     private lateinit var filterButtons: List<Chip>
     private lateinit var loadingIndicator: View
+    private lateinit var cartBadgeText: TextView
     private var selectedType: String = "all"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,12 +52,14 @@ class MainActivity : AppCompatActivity() {
             onAddToCartClick = { selectedCoffee ->
                 cartViewModel.addItem(selectedCoffee)
                 cartViewModel.saveCart(this)
+                updateCartBadge(cartViewModel.getCartItemCount())
                 Toast.makeText(this, "Added ${selectedCoffee.name} to Cart!", Toast.LENGTH_SHORT)
                     .show()
             }
         )
         rvCoffeeList.adapter = coffeeAdapter
         loadingIndicator = findViewById(R.id.progressMainMenu)
+        cartBadgeText = findViewById(R.id.tvCartBadge)
 
         etSearchCoffee = findViewById(R.id.etSearchCoffee)
         etSearchCoffee.addTextChangedListener(object : TextWatcher {
@@ -123,11 +127,14 @@ class MainActivity : AppCompatActivity() {
             openAnalytics()
         }
 
+        updateCartBadge(cartViewModel.getCartItemCount())
         reloadMenu()
     }
 
     override fun onResume() {
         super.onResume()
+        cartViewModel.loadCart(this)
+        updateCartBadge(cartViewModel.getCartItemCount())
         reloadMenu()
     }
 
@@ -188,6 +195,16 @@ class MainActivity : AppCompatActivity() {
             View.VISIBLE
         } else {
             View.GONE
+        }
+    }
+
+    private fun updateCartBadge(count: Int) {
+        if (!::cartBadgeText.isInitialized) return
+        if (count > 0) {
+            cartBadgeText.visibility = View.VISIBLE
+            cartBadgeText.text = if (count > 99) "99+" else count.toString()
+        } else {
+            cartBadgeText.visibility = View.GONE
         }
     }
 

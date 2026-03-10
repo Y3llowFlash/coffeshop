@@ -29,6 +29,10 @@ object CartManager {
         return items
     }
 
+    fun getCartItemCount(): Int {
+        return items.sumOf { it.quantity }
+    }
+
     fun getTotalPrice(): Double {
         var total = 0.0
         for (item in items) {

@@ -9,6 +9,8 @@ import com.example.coffeeshopapp.model.CoffeeModel
 class CartViewModel : ViewModel() {
     fun getCartItems(): List<CartItem> = CartManager.getCartItems()
 
+    fun getCartItemCount(): Int = CartManager.getCartItemCount()
+
     fun addItem(coffee: CoffeeModel, quantity: Int = 1) {
         CartManager.addItem(coffee, quantity)
     }
